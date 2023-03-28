@@ -8,6 +8,12 @@
 typedef double(*SISO_scalar_function)(const double); // Single-Input Single-Output function
 // typedef double(*MISO_scalar_function)(const Eigen::VectorXd&); // Multiple-Input Single-Output function
 
+// Returns a std::vector containing num_points evenly spaced between start_val and end_val.
+//
+// num_points is inclusive of start_val and end_val
+std::vector<double> linspace(const double start_val, const double end_val,
+	const size_t num_pts);
+
 // Prints a list of scalars into a ".csv" file
 void print_scalar_list(const std::vector<double>& scalar_list,
 	const std::string& filename);

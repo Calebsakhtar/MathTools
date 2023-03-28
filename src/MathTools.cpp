@@ -2,6 +2,21 @@
 #include <fstream>
 #include "../headers/MathTools.h"
 
+std::vector<double> linspace(const double start_val, const double end_val,
+	const size_t num_pts) {
+	// Returns a std::vector containing num_points evenly spaced between start_val and end_val.
+	//
+	// num_points is inclusive of start_val and end_val
+	std::vector<double> results = { start_val };
+	const double increment = (end_val - start_val) / static_cast<double>(num_pts - 1);
+
+	for (size_t i = 1; i < num_pts; i++) {
+		results.push_back(results[i - 1] + increment);
+	}
+
+	return results;
+}
+
 void print_scalar_list(const std::vector<double>& scalar_list,
 	// Prints a list of scalars into a ".csv" file
 
