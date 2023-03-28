@@ -2,16 +2,19 @@
 #define MATH_TOOLS_H
 
 #include <vector>
-#include <math.h>
-#include <fstream>
+#include <string>
 #include"../eigen/Eigen/Dense"
 
 typedef double(*SISO_scalar_function)(const double); // Single-Input Single-Output function
 typedef double(*MISO_scalar_function)(const Eigen::VectorXd&); // Multiple-Input Single-Output function
 
-bool print_vector_list(const std::vector<Eigen::VectorXd>& vect_list);
+// Prints a list of scalars into a ".csv" file
+void print_scalar_list(const std::vector<double>& scalar_list,
+	const std::string& filename);
 
-bool print_scalar_list(const std::vector<double>& scalar_list);
+// Prints a list of vectors into a ".csv" file
+void print_vector_list(const std::vector<Eigen::VectorXd>& vect_list,
+	const std::string& filename);
 
 // 1-D numerical integration (trapezium rule) of a Single-Input Single-Output (SISO)
 // function.
