@@ -1,0 +1,29 @@
+#ifndef MATH_TOOLS_H
+#define MATH_TOOLS_H
+
+#include <vector>
+#include <math.h>
+#include <fstream>
+#include"../eigen/Eigen/Dense"
+
+typedef double(*SISO_scalar_function)(const double); // Single-Input Single-Output function
+typedef double(*MISO_scalar_function)(const Eigen::VectorXd&); // Multiple-Input Single-Output function
+
+bool print_vector_list(const std::vector<Eigen::VectorXd>& vect_list);
+
+bool print_scalar_list(const std::vector<double>& scalar_list);
+
+// 1-D numerical integration (trapezium rule) of a Single-Input Single-Output (SISO)
+// function.
+//
+// This function returns a vector containing the values of the integral
+// at all points in ip_list minus the value of the integral at the initial point of
+// ip_list
+std::vector<double> integrate_func_SISO(const std::vector<double>& ip_list,
+	SISO_scalar_function func);
+
+// N-D numerical integration of a Multiple-Input Single-Output (MISO) function.
+double integrate_func_MISO(const std::vector<Eigen::VectorXd>& ip_list,
+	MISO_scalar_function func);
+
+#endif
