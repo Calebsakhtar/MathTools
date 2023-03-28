@@ -6,7 +6,7 @@
 #include"../eigen/Eigen/Dense"
 
 typedef double(*SISO_scalar_function)(const double); // Single-Input Single-Output function
-typedef double(*MISO_scalar_function)(const Eigen::VectorXd&); // Multiple-Input Single-Output function
+// typedef double(*MISO_scalar_function)(const Eigen::VectorXd&); // Multiple-Input Single-Output function
 
 // Prints a list of scalars into a ".csv" file
 void print_scalar_list(const std::vector<double>& scalar_list,
@@ -25,8 +25,8 @@ void print_vector_list(const std::vector<Eigen::VectorXd>& vect_list,
 std::vector<double> integrate_func_SISO(const std::vector<double>& ip_list,
 	SISO_scalar_function func);
 
-// N-D numerical integration of a Multiple-Input Single-Output (MISO) function.
-double integrate_func_MISO(const std::vector<Eigen::VectorXd>& ip_list,
-	MISO_scalar_function func);
+//// N-D numerical integration of a Multiple-Input Single-Output (MISO) function.
+//double integrate_func_MISO(const std::vector<Eigen::VectorXd>& ip_list,
+//	MISO_scalar_function func);
 
 #endif
