@@ -47,3 +47,26 @@ void print_vector_list(const std::vector<Eigen::VectorXd>& vect_list,
 	// Close the output file
 	Opfile.close();
 }
+
+std::vector<double> integrate_func_SISO(const std::vector<double>& ip_list,
+	SISO_scalar_function func) {
+	// 1-D numerical integration (trapezium rule) of a Single-Input Single-Output (SISO)
+	// function.
+	//
+	// This function returns a vector containing the values of the integral
+	// at all points in ip_list minus the value of the integral at the initial point of
+	// ip_list
+
+	std::vector<double> result;
+	double h;	
+
+	result.push_back(0);
+
+	for (size_t i = 1; i < ip_list.size(); i++) {
+		h = ip_list[i] - ip_list[i - 1];
+		result.push_back( result[i - 1] + 0.5 * h * 
+			(func(ip_list[i]) + func(ip_list[i - 1])) );
+	}
+
+	return result;
+}
