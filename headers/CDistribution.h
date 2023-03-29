@@ -91,6 +91,48 @@ namespace MathTools {
 		virtual double sample(std::default_random_engine& generator) const;
 	};
 
+	// *********** GAMMA DISTRIBUTION *********** //
+	class GammaCDistribution : public CDistribution {
+		double m_alpha_shape; // Shape parameter
+		double m_beta_scale; // Scale parameter
+
+	public:
+		GammaCDistribution() {};
+
+		// Constructor that uses the following equations to set the mean and
+		// standard deviation
+		//
+		// mean = alpha/beta
+		// stdev = sqrt(alpha)/beta
+		//
+		// See the following link for more details: https://math.stackexchange.com/questions/1810257/gamma-functions-mean-and-standard-deviation-through-shape-and-rate#:~:text=A%20gamma%20distribution%20has%20a,%5D%3D%E2%88%9Aa%2Fb.
+		GammaCDistribution(const double alpha_shape, const double beta_scale) {
+			m_alpha_shape = alpha_shape;
+			m_beta_scale = beta_scale;
+
+			m_mean = alpha_shape / beta_scale;
+			m_stdev = sqrt(alpha_shape) / beta_scale;
+		};
+
+		// Initialize the parameters of the Gamma Distribution using the mean
+		// and standard deviation.
+		//
+		// alpha = (mean/stdev)^2
+		// beta = mean/stdev^2
+		//
+		// See the following link for more details: https://math.stackexchange.com/questions/1810257/gamma-functions-mean-and-standard-deviation-through-shape-and-rate#:~:text=A%20gamma%20distribution%20has%20a,%5D%3D%E2%88%9Aa%2Fb.
+		void set_params_mean_stdev(const double mean, const double stdev);
+
+		// Evaluates the PDF of the Gamma Distribution at the point x.
+		//
+		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
+		virtual double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+
+		// Takes a random sample of the Gamma Distribution using a random number generator.
+		//
+		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
+		virtual double sample(std::default_random_engine& generator) const;
+	};
 }
 
 #endif

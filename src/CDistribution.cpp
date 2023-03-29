@@ -61,4 +61,40 @@ namespace MathTools {
 
 		return unif(generator);
 	}
+
+	// *********** GAMMA DISTRIBUTION FUNCTIONS *********** //
+	void GammaCDistribution::set_params_mean_stdev(const double mean, const double stdev) {
+		// Initialize the parameters of the Gamma Distribution using the mean
+		// and standard deviation.
+		//
+		// alpha = (mean/stdev)^2
+		// beta = mean/stdev^2
+		//
+		// See the following link for more details: https://math.stackexchange.com/questions/1810257/gamma-functions-mean-and-standard-deviation-through-shape-and-rate#:~:text=A%20gamma%20distribution%20has%20a,%5D%3D%E2%88%9Aa%2Fb.
+
+		m_mean = mean;
+		m_stdev = stdev;
+
+		m_alpha_shape = pow(mean / stdev, 2);
+		m_beta_scale = mean / pow(stdev, 2);
+	}
+
+	double GammaCDistribution::evaluate_PDF(const double x) const {
+		// Evaluates the PDF of the Gamma Distribution at the point x.
+		//
+		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
+
+		return exp(-x / m_beta_scale) * pow(x, m_alpha_shape - 1) / 
+			(pow(m_beta_scale, m_alpha_shape) * tgamma(m_alpha_shape));
+	}
+
+	double GammaCDistribution::sample(std::default_random_engine& generator) const {
+		// Takes a random sample of the Gamma Distribution using a random number generator.
+		//
+		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
+
+		std::gamma_distribution<double> gamma(m_alpha_shape, m_beta_scale);
+
+		return gamma(generator);
+	}
 }
