@@ -133,6 +133,49 @@ namespace MathTools {
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
 		virtual double sample(std::default_random_engine& generator) const;
 	};
+
+	// *********** BETA DISTRIBUTION *********** //
+	class BetaCDistribution : public CDistribution {
+		double m_alpha;
+		double m_beta;
+
+	public:
+		BetaCDistribution() {};
+
+		// Constructor that uses the following equations to set the mean and
+		// standard deviation
+		//
+		// mean = alpha / (alpha + beta)
+		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+		BetaCDistribution(const double alpha, const double beta) {
+			m_alpha = alpha;
+			m_beta = beta;
+
+			m_mean = alpha / (alpha + beta);
+			m_stdev = sqrt(alpha * beta /( pow(alpha + beta,2) * (alpha + beta + 1)));
+		};
+
+		// Initialize the parameters of the Beta Distribution using the mean
+		// and standard deviation. It inverts the below equations:
+		//
+		// mean = alpha / (alpha + beta)
+		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+		void set_params_mean_stdev(const double mean, const double stdev);
+
+		// Evaluates the PDF of the Beta Distribution at the point x.
+		//
+		// See the following link for more details: 
+		virtual double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+
+		// Takes a random sample of the Beta Distribution using a random number generator.
+		//
+		// See the following link for more details: 
+		virtual double sample(std::default_random_engine& generator) const;
+	};
 }
 
 #endif

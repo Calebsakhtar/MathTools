@@ -97,4 +97,29 @@ namespace MathTools {
 
 		return gamma(generator);
 	}
+
+	// *********** BETA DISTRIBUTION FUNCTIONS *********** //
+	void BetaCDistribution::set_params_mean_stdev(const double mean, const double stdev){
+		// Initialize the parameters of the Beta Distribution using the mean
+		// and standard deviation. It inverts the below equations:
+		//
+		// mean = alpha / (alpha + beta)
+		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+	}
+
+	double BetaCDistribution::evaluate_PDF(const double x) const {
+		// Evaluates the PDF of the Beta Distribution at the point x.
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+
+	}
+
+	double BetaCDistribution::sample(std::default_random_engine& generator) const {
+		// Takes a random sample of the Beta Distribution using a random number generator.
+		//
+		// See the following link for more details: https://stackoverflow.com/questions/10358064/random-numbers-from-beta-distribution-c
+
+	}
 }
