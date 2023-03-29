@@ -1,5 +1,5 @@
-#ifndef DISTRIBUTION_H
-#define DISTRIBUTION_H
+#ifndef CDISTRIBUTION_H
+#define CDISTRIBUTION_H
 
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
@@ -12,16 +12,16 @@
 namespace MathTools {
 
 	// *********** GENERIC DISTRIBUTION (PARENT CLASS) *********** //
-	class Distribution {
+	class CDistribution {
 	protected:
 		std::string m_name;
 		double m_mean;
 		double m_stdev;
 
 	public:
-		Distribution() {};
+		CDistribution() {};
 
-		Distribution(const double mean, const double stdev) {
+		CDistribution(const double mean, const double stdev) {
 			m_mean = mean;
 			m_stdev = stdev;
 		}
@@ -32,9 +32,9 @@ namespace MathTools {
 	};
 
 	// *********** NORMAL DISTRIBUTION *********** //
-	class NormalDistribution: public Distribution {
-		// Use the same constructors as Distribution
-		using Distribution::Distribution;
+	class NormalCDistribution: public CDistribution {
+		// Use the same constructors as CDistribution
+		using CDistribution::CDistribution;
 
 	public:
 		// Evaluates the PDF of the Normal Distribution at the point x.
@@ -49,12 +49,12 @@ namespace MathTools {
 	};
 
 	// *********** UNIFORM DISTRIBUTION *********** //
-	class UniformDistribution : public Distribution {
+	class UniformCDistribution : public CDistribution {
 		double m_lower_lim; // Lower limit for the distribution
 		double m_upper_lim; // Upper limit for the distribution
 
 	public:
-		UniformDistribution() {};
+		UniformCDistribution() {};
 
 		// Constructor that uses the following equations to set the mean and
 		// standard deviation
@@ -63,7 +63,7 @@ namespace MathTools {
 		// stdev = (upper_lim - lower_lim)/sqrt(12)
 		//
 		// See the following link for more details: https://www.statology.org/uniform-distribution-r/#:~:text=The%20uniform%20distribution%20has%20the,distribution%20is%20%CF%83%20%3D%20%E2%88%9A%CF%83
-		UniformDistribution(const double lower_lim, const double upper_lim) {
+		UniformCDistribution(const double lower_lim, const double upper_lim) {
 			m_lower_lim = lower_lim;
 			m_upper_lim = upper_lim;
 

@@ -1,9 +1,9 @@
-#include "../headers/Distribution.h"
+#include "../headers/CDistribution.h"
 
 namespace MathTools {
 
 	// *********** NORMAL DISTRIBUTION FUNCTIONS *********** //
-	double NormalDistribution::evaluate_PDF(const double x) const {
+	double NormalCDistribution::evaluate_PDF(const double x) const {
 		// Evaluates the PDF of the Normal Distribution at the point x.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
@@ -11,7 +11,7 @@ namespace MathTools {
 		return exp(-1 * pow(x - m_mean, 2) / (2 * pow(m_stdev, 2))) / (m_stdev * sqrt(2 * M_PI));
 	}
 
-	double NormalDistribution::sample(std::default_random_engine& generator) const {
+	double NormalCDistribution::sample(std::default_random_engine& generator) const {
 		// Takes a random sample of the normal distribution using a random number generator
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
@@ -22,7 +22,7 @@ namespace MathTools {
 	}
 
 	// *********** UNIFORM DISTRIBUTION FUNCTIONS *********** //
-	void UniformDistribution::set_params_mean_stdev(const double mean, const double stdev) {
+	void UniformCDistribution::set_params_mean_stdev(const double mean, const double stdev) {
 		// Initialize the parameters of the uniform distribution using the mean
 		// and standard deviation.
 		//
@@ -39,7 +39,7 @@ namespace MathTools {
 		m_upper_lim = mean + delta;
 	}
 
-	double UniformDistribution::evaluate_PDF(const double x) const {
+	double UniformCDistribution::evaluate_PDF(const double x) const {
 		// Evaluates the PDF of the Uniform Distribution at the point x.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/uniform_real_distribution/
@@ -52,7 +52,7 @@ namespace MathTools {
 		}
 	}
 
-	double UniformDistribution::sample(std::default_random_engine& generator) const {
+	double UniformCDistribution::sample(std::default_random_engine& generator) const {
 		// Takes a random sample of the Uniform Distribution using a random number generator.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/uniform_real_distribution/

@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include"../eigen/Eigen/Dense"
-#include "../headers/Distribution.h"
+#include "../headers/CDistribution.h"
 
 typedef double(*SISO_scalar_function)(const double); // Single-Input Single-Output function
 // typedef double(*MISO_scalar_function)(const Eigen::VectorXd&); // Multiple-Input Single-Output function
