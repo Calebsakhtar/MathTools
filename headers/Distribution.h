@@ -14,7 +14,7 @@ namespace MathTools {
 	// *********** GENERIC DISTRIBUTION (PARENT CLASS) *********** //
 	class Distribution {
 	protected:
-		std::string m_name;
+		bool is_discrete = false;
 		double m_mean;
 		double m_stdev;
 
