@@ -1,4 +1,4 @@
-#include "../headers/CDistribution.h"
+#include "../headers/Distribution.h"
 
 namespace MathTools {
 
