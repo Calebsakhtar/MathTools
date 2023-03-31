@@ -107,6 +107,9 @@ namespace MathTools {
 		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
 		//
 		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+
+		m_alpha = (1 - mean) * pow(mean / stdev, 2) - mean;
+		m_beta = m_alpha / mean * (1 - mean);
 	}
 
 	double BetaCDistribution::evaluate_PDF(const double x) const {
@@ -114,12 +117,21 @@ namespace MathTools {
 		//
 		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
 
+		return pow(x, m_alpha - 1) * pow(1 - x, m_beta - 1)	* tgamma(m_alpha + m_beta)
+			/ (tgamma(m_alpha) * tgamma(m_beta));
 	}
 
 	double BetaCDistribution::sample(std::default_random_engine& generator) const {
 		// Takes a random sample of the Beta Distribution using a random number generator.
 		//
-		// See the following link for more details: https://stackoverflow.com/questions/10358064/random-numbers-from-beta-distribution-c
+		// See the following link for more details: https://stackoverflow.com/a/10359049
 
+		std::gamma_distribution<double> gammaX(m_alpha, 1);
+		std::gamma_distribution<double> gammaY(m_beta, 1);
+
+		const double X = gammaX(generator);
+		const double Y = gammaY(generator);
+
+		return X / (X + Y);
 	}
 }

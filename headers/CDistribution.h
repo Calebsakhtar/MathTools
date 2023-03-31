@@ -173,7 +173,7 @@ namespace MathTools {
 
 		// Takes a random sample of the Beta Distribution using a random number generator.
 		//
-		// See the following link for more details: 
+		// See the following link for more details: https://stackoverflow.com/a/10359049
 		virtual double sample(std::default_random_engine& generator) const;
 	};
 }
