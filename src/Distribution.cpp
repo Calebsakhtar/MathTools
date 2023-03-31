@@ -119,6 +119,8 @@ namespace MathTools {
 		//
 		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
 
+		if (x < 0 || x > 1) { return 0; }
+
 		return pow(x, m_alpha - 1) * pow(1 - x, m_beta - 1)	* tgamma(m_alpha + m_beta)
 			/ (tgamma(m_alpha) * tgamma(m_beta));
 	}
