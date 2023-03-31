@@ -84,6 +84,8 @@ namespace MathTools {
 		//
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
 
+		if (x <= 0) { return 0; }
+
 		return exp(-x / m_beta_scale) * pow(x, m_alpha_shape - 1) / 
 			(pow(m_beta_scale, m_alpha_shape) * tgamma(m_alpha_shape));
 	}
