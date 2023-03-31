@@ -12,16 +12,16 @@
 namespace MathTools {
 
 	// *********** GENERIC DISTRIBUTION (PARENT CLASS) *********** //
-	class CDistribution {
+	class Distribution {
 	protected:
 		std::string m_name;
 		double m_mean;
 		double m_stdev;
 
 	public:
-		CDistribution() {};
+		Distribution() {};
 
-		CDistribution(const double mean, const double stdev) {
+		Distribution(const double mean, const double stdev) {
 			m_mean = mean;
 			m_stdev = stdev;
 		}
@@ -32,9 +32,9 @@ namespace MathTools {
 	};
 
 	// *********** NORMAL DISTRIBUTION *********** //
-	class NormalCDistribution: public CDistribution {
+	class NormalCDistribution: public Distribution {
 		// Use the same constructors as CDistribution
-		using CDistribution::CDistribution;
+		using Distribution::Distribution;
 
 	public:
 		// Evaluates the PDF of the Normal Distribution at the point x.
@@ -49,7 +49,7 @@ namespace MathTools {
 	};
 
 	// *********** UNIFORM DISTRIBUTION *********** //
-	class UniformCDistribution : public CDistribution {
+	class UniformCDistribution : public Distribution {
 		double m_lower_lim; // Lower limit for the distribution
 		double m_upper_lim; // Upper limit for the distribution
 
@@ -92,7 +92,7 @@ namespace MathTools {
 	};
 
 	// *********** GAMMA DISTRIBUTION *********** //
-	class GammaCDistribution : public CDistribution {
+	class GammaCDistribution : public Distribution {
 		double m_alpha_shape; // Shape parameter
 		double m_beta_scale; // Scale parameter
 
@@ -135,7 +135,7 @@ namespace MathTools {
 	};
 
 	// *********** BETA DISTRIBUTION *********** //
-	class BetaCDistribution : public CDistribution {
+	class BetaCDistribution : public Distribution {
 		double m_alpha;
 		double m_beta;
 
