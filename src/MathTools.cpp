@@ -87,4 +87,24 @@ namespace MathTools {
 
 		return result;
 	}
+
+	size_t nChoosek(size_t n, size_t k)	{
+		// Computes the binomial coefficient (n choose k), i.e. the
+		//  number of ways to choose k objects from a set of n objects.
+		//
+		// This code has been taken directly from https://stackoverflow.com/a/9331125
+		//
+		// See the following link for an explanation: https://stackoverflow.com/a/42285958
+
+		if (k > n) return 0;
+		if (k * 2 > n) k = n - k;
+		if (k == 0) return 1;
+
+		int result = n;
+		for (int i = 2; i <= k; ++i) {
+			result *= (n - i + 1);
+			result /= i;
+		}
+		return result;
+	}
 }

@@ -35,6 +35,14 @@ namespace MathTools {
 	std::vector<double> integrate_func_SISO(const std::vector<double>& ip_list,
 		SISO_scalar_function func);
 
+	// Computes the binomial coefficient (n choose k), i.e. the
+	//  number of ways to choose k objects from a set of n objects.
+	//
+	// This code has been taken directly from https://stackoverflow.com/a/9331125
+	//
+	// See the following link for an explanation: https://stackoverflow.com/a/42285958
+	size_t nChoosek(size_t n, size_t k);
+
 	//// N-D numerical integration of a Multiple-Input Single-Output (MISO) function.
 	//double integrate_func_MISO(const std::vector<Eigen::VectorXd>& ip_list,
 	//	MISO_scalar_function func);
