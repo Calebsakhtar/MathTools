@@ -108,7 +108,7 @@ namespace MathTools {
 		return result;
 	}
 
-	double nChoosek_gamma(const double n, double k) {
+	double nChoosek_gamma(const double n, const double k) {
 		// Computes the binomial coefficient (n choose k), i.e. the
 		// number of ways to choose k objects from a set of n objects.
 		// 
@@ -117,8 +117,7 @@ namespace MathTools {
 		//
 		// See: https://en.wikipedia.org/wiki/Binomial_coefficient#In_programming_languages
 
-		if (k > n) return 0;
-		if (k == 0) return 1;
+		if (k < 0) return 0;
 
 		return exp(lgamma(n + 1) - lgamma(k + 1) - lgamma(n - k + 1));
 	}

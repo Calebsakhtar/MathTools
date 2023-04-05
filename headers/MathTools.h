@@ -50,7 +50,7 @@ namespace MathTools {
 	// of the gamma function.
 	//
 	// See: https://en.wikipedia.org/wiki/Binomial_coefficient#In_programming_languages
-	double nChoosek_gamma(const double n, double k);
+	double nChoosek_gamma(const double n, const double k);
 
 	//// N-D numerical integration of a Multiple-Input Single-Output (MISO) function.
 	//double integrate_func_MISO(const std::vector<Eigen::VectorXd>& ip_list,
