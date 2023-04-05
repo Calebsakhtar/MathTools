@@ -88,7 +88,7 @@ namespace MathTools {
 		return result;
 	}
 
-	size_t nChoosek(size_t n, size_t k)	{
+	size_t nChoosek(const size_t n, size_t k)	{
 		// Computes the binomial coefficient (n choose k), i.e. the
 		//  number of ways to choose k objects from a set of n objects.
 		//
@@ -100,11 +100,26 @@ namespace MathTools {
 		if (k * 2 > n) k = n - k;
 		if (k == 0) return 1;
 
-		int result = n;
-		for (int i = 2; i <= k; ++i) {
+		unsigned int result = n;
+		for (unsigned int i = 2; i <= k; ++i) {
 			result *= (n - i + 1);
 			result /= i;
 		}
 		return result;
+	}
+
+	double nChoosek_gamma(const double n, double k) {
+		// Computes the binomial coefficient (n choose k), i.e. the
+		// number of ways to choose k objects from a set of n objects.
+		// 
+		// This is a continuous version of nChoosek, extended by the use
+		// of the gamma function.
+		//
+		// See: https://en.wikipedia.org/wiki/Binomial_coefficient#In_programming_languages
+
+		if (k > n) return 0;
+		if (k == 0) return 1;
+
+		return exp(lgamma(n + 1) - lgamma(k + 1) - lgamma(n - k + 1));
 	}
 }

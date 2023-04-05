@@ -36,12 +36,21 @@ namespace MathTools {
 		SISO_scalar_function func);
 
 	// Computes the binomial coefficient (n choose k), i.e. the
-	//  number of ways to choose k objects from a set of n objects.
+	// number of ways to choose k objects from a set of n objects.
 	//
 	// This code has been taken directly from https://stackoverflow.com/a/9331125
 	//
 	// See the following link for an explanation: https://stackoverflow.com/a/42285958
-	size_t nChoosek(size_t n, size_t k);
+	size_t nChoosek(const size_t n, size_t k);
+
+	// Computes the binomial coefficient (n choose k), i.e. the
+	// number of ways to choose k objects from a set of n objects.
+	// 
+	// This is a continuous version of nChoosek, extended by the use
+	// of the gamma function.
+	//
+	// See: https://en.wikipedia.org/wiki/Binomial_coefficient#In_programming_languages
+	double nChoosek_gamma(const double n, double k);
 
 	//// N-D numerical integration of a Multiple-Input Single-Output (MISO) function.
 	//double integrate_func_MISO(const std::vector<Eigen::VectorXd>& ip_list,
