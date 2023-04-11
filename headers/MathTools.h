@@ -26,16 +26,7 @@ namespace MathTools {
 	void print_vector_list(const std::vector<Eigen::VectorXd>& vect_list,
 		const std::string& filename);
 
-	// 1-D numerical integration (trapezium rule) of a Single-Input Single-Output (SISO)
-	// function.
-	//
-	// This function returns a vector containing the values of the integral
-	// at all points in ip_list minus the value of the integral at the initial point of
-	// ip_list
-	std::vector<double> integrate_func_SISO(const std::vector<double>& ip_list,
-		SISO_scalar_function func);
-
-	// Computes the binomial coefficient (n choose k), i.e. the
+		// Computes the binomial coefficient (n choose k), i.e. the
 	// number of ways to choose k objects from a set of n objects.
 	//
 	// This code has been taken directly from https://stackoverflow.com/a/9331125
@@ -51,6 +42,24 @@ namespace MathTools {
 	//
 	// See: https://en.wikipedia.org/wiki/Binomial_coefficient#In_programming_languages
 	double nChoosek_gamma(const double n, const double k);
+
+	// 1-D numerical integration (trapezium rule) of a Single-Input Single-Output (SISO)
+	// function.
+	//
+	// This function returns a vector containing the values of the integral
+	// at all points in ip_list minus the value of the integral at the initial point of
+	// ip_list
+	std::vector<double> integrate_func_SISO(const std::vector<double>& ip_list,
+		SISO_scalar_function func);
+
+	// 1-D numerical integration (trapezium rule) of a the PDFs of a set of distributions
+	// and a set of orthogonal polynomials.
+	//
+	// This function returns the total value of the integral
+	template <typename Dist, typename Poly>
+	double integrate_product_dist_polys(const std::vector<double>& ip_list,
+		std::vector<std::shared_ptr<Dist>> ip_distributions,
+		std::vector<std::shared_ptr<Poly>> ip_orth_polys);
 
 	//// N-D numerical integration of a Multiple-Input Single-Output (MISO) function.
 	//double integrate_func_MISO(const std::vector<Eigen::VectorXd>& ip_list,

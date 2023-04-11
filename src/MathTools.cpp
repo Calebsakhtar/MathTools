@@ -65,30 +65,7 @@ namespace MathTools {
 		Opfile.close();
 	}
 
-	std::vector<double> integrate_func_SISO(const std::vector<double>& ip_list,
-		SISO_scalar_function func) {
-		// 1-D numerical integration (trapezium rule) of a Single-Input Single-Output (SISO)
-		// function.
-		//
-		// This function returns a vector containing the values of the integral
-		// at all points in ip_list minus the value of the integral at the initial point of
-		// ip_list
-
-		std::vector<double> result;
-		double h;
-
-		result.push_back(0);
-
-		for (size_t i = 1; i < ip_list.size(); i++) {
-			h = ip_list[i] - ip_list[i - 1];
-			result.push_back(result[i - 1] + 0.5 * h *
-				(func(ip_list[i]) + func(ip_list[i - 1])));
-		}
-
-		return result;
-	}
-
-	size_t nChoosek(const size_t n, size_t k)	{
+	size_t nChoosek(const size_t n, size_t k) {
 		// Computes the binomial coefficient (n choose k), i.e. the
 		//  number of ways to choose k objects from a set of n objects.
 		//
@@ -121,4 +98,93 @@ namespace MathTools {
 
 		return exp(lgamma(n + 1) - lgamma(k + 1) - lgamma(n - k + 1));
 	}
+
+	std::vector<double> integrate_func_SISO(const std::vector<double>& ip_list,
+		SISO_scalar_function func) {
+		// 1-D numerical integration (trapezium rule) of a Single-Input Single-Output (SISO)
+		// function.
+		//
+		// This function returns a vector containing the values of the integral
+		// at all points in ip_list minus the value of the integral at the initial point of
+		// ip_list
+
+		std::vector<double> result;
+		double h;
+
+		result.push_back(0);
+
+		for (size_t i = 1; i < ip_list.size(); i++) {
+			h = ip_list[i] - ip_list[i - 1];
+			result.push_back(result[i - 1] + 0.5 * h *
+				(func(ip_list[i]) + func(ip_list[i - 1])));
+		}
+
+		return result;
+	}
+	template <typename Dist, typename Poly>
+	double integrate_product_dist_polys(const std::vector<double>& ip_list,
+		std::vector<std::shared_ptr<Dist>> ip_distributions,
+		std::vector<std::shared_ptr<Poly>> ip_orth_polys) {
+		// 1-D numerical integration (trapezium rule) of a the PDFs of a set of distributions
+		// and a set of orthogonal polynomials.
+		//
+		// This function returns a vector containing the values of the integral
+		// at all points in ip_list minus the value of the integral at the initial point of
+		// ip_list
+		
+		std::vector<double> result;
+		double h = 1;
+		double current_eval = 1;
+		double prev_eval = 1;
+
+		for (size_t i = 0; i < ip_distributions.size(); i++) {
+			prev_eval *= ip_distributions[i]->evaluate_PDF(ip_list[0]);
+		}
+
+		for (size_t i = 0; i < ip_orth_polys.size(); i++) {
+			prev_eval *= ip_orth_polys[i]->evaluate(ip_list[0]);
+		}
+
+		result.push_back(0);
+
+		for (size_t j = 1; j < ip_list.size(); j++) {
+			h = ip_list[j] - ip_list[j - 1];
+			current_eval = 1;
+
+			for (size_t i = 0; i < ip_distributions.size(); i++) {
+				current_eval *= ip_distributions[i]->evaluate_PDF(ip_list[j]);
+			}
+
+			for (size_t i = 0; i < ip_orth_polys.size(); i++) {
+				current_eval *= ip_orth_polys[i]->evaluate(ip_list[j]);
+			}
+			
+			result.push_back(result[j - 1] + 0.5 * h *
+				(current_eval + prev_eval));
+
+			prev_eval = current_eval;
+		}
+
+		return result.back();
+	}
+
+	template
+	double integrate_product_dist_polys(const std::vector<double>& ip_list,
+		std::vector<std::shared_ptr<NormalCDistribution>> ip_distributions,
+		std::vector<std::shared_ptr<HermitePoly>> ip_orth_polys);
+
+	template
+	double integrate_product_dist_polys(const std::vector<double>& ip_list,
+		std::vector<std::shared_ptr<UniformCDistribution>> ip_distributions,
+		std::vector<std::shared_ptr<LegendrePoly>> ip_orth_polys);
+
+	template
+	double integrate_product_dist_polys(const std::vector<double>& ip_list,
+		std::vector<std::shared_ptr<GammaCDistribution>> ip_distributions,
+		std::vector<std::shared_ptr<LaguerrePoly>> ip_orth_polys);
+
+	template
+		double integrate_product_dist_polys(const std::vector<double>& ip_list,
+		std::vector<std::shared_ptr<BetaCDistribution>> ip_distributions,
+		std::vector<std::shared_ptr<JacobiPoly>> ip_orth_polys);
 }
