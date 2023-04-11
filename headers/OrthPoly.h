@@ -17,7 +17,7 @@ namespace MathTools {
 			m_n = n;
 		};
 
-		double evaluate(const double x) const;
+		virtual double evaluate(const double x) const = 0;
 
 		size_t get_order() const{
 			return m_n;
@@ -34,7 +34,7 @@ namespace MathTools {
 		// Use the same constructors as OrthPoly
 		using OrthPoly::OrthPoly;
 	public:
-		virtual double evaluate(const double x) const{
+		double evaluate(const double x) const{
 			// See documentation: https://en.cppreference.com/w/cpp/numeric/special_functions/legendre			
 			return std::legendre(m_n, x);
 		}
@@ -45,7 +45,7 @@ namespace MathTools {
 		// Use the same constructors as OrthPoly
 		using OrthPoly::OrthPoly;
 	public:
-		virtual double evaluate(const double x) const{
+		double evaluate(const double x) const{
 			// See documentation: https://en.cppreference.com/w/cpp/numeric/special_functions/hermite
 			return std::hermite(m_n, x);
 		}
@@ -56,7 +56,7 @@ namespace MathTools {
 		// Use the same constructors as OrthPoly
 		using OrthPoly::OrthPoly;
 	public:
-		virtual double evaluate(const double x) const{
+		double evaluate(const double x) const{
 			// See documentation: https://en.cppreference.com/w/cpp/numeric/special_functions/laguerre
 			return std::laguerre(m_n, x);
 		}
@@ -81,7 +81,7 @@ namespace MathTools {
 		// using the stored coefficient.
 		//
 		// See: https://en.wikipedia.org/wiki/Jacobi_polynomials#Alternate_expression_for_real_argument
-		virtual double evaluate(const double x) const;
+		double evaluate(const double x) const;
 
 		double get_alpha() const {
 			return m_alpha;
