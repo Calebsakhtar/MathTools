@@ -26,9 +26,9 @@ namespace MathTools {
 			m_stdev = stdev;
 		}
 
-		double evaluate_PDF(const double x) const;
+		virtual double evaluate_PDF(const double x) const = 0;
 
-		double sample(std::default_random_engine& generator) const;
+		virtual  double sample(std::default_random_engine& generator) const = 0;
 	};
 
 	// *********** NORMAL DISTRIBUTION *********** //
@@ -40,12 +40,12 @@ namespace MathTools {
 		// Evaluates the PDF of the Normal Distribution at the point x.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
-		virtual double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
 
 		// Takes a random sample of the normal distribution using a random number generator
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
-		virtual double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const;
 	};
 
 	// *********** UNIFORM DISTRIBUTION *********** //
@@ -83,12 +83,12 @@ namespace MathTools {
 		// Evaluates the PDF of the Uniform Distribution at the point x.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/uniform_real_distribution/
-		virtual double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
 
 		// Takes a random sample of the Uniform Distribution using a random number generator.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/uniform_real_distribution/
-		virtual double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const;
 	};
 
 	// *********** GAMMA DISTRIBUTION *********** //
@@ -126,12 +126,12 @@ namespace MathTools {
 		// Evaluates the PDF of the Gamma Distribution at the point x.
 		//
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
-		virtual double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
 
 		// Takes a random sample of the Gamma Distribution using a random number generator.
 		//
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
-		virtual double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const;
 	};
 
 	// *********** BETA DISTRIBUTION *********** //
@@ -169,12 +169,12 @@ namespace MathTools {
 		// Evaluates the PDF of the Beta Distribution at the point x.
 		//
 		// See the following link for more details: 
-		virtual double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
 
 		// Takes a random sample of the Beta Distribution using a random number generator.
 		//
 		// See the following link for more details: https://stackoverflow.com/a/10359049
-		virtual double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const;
 	};
 }
 
