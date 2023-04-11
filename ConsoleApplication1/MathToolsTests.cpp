@@ -152,7 +152,7 @@ void beta_distribution_test_mean() {
     MathTools::print_scalar_list(samples, "Samples");
 }
 
-void simple_distribution_test() {
+void galerkin_projection_test() {
     // Values of the spectral variable eta
     const std::vector<double> ip_list = MathTools::linspace(-50, 50, 10001);
 
@@ -208,5 +208,5 @@ int main(){
     //gamma_distribution_test_mean();
     //beta_distribution_test_parametric();
     //beta_distribution_test_mean();
-    simple_distribution_test();
+    galerkin_projection_test();
 }
