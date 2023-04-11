@@ -152,6 +152,36 @@ void beta_distribution_test_mean() {
     MathTools::print_scalar_list(samples, "Samples");
 }
 
+void simple_distribution_test() {
+    const std::vector<double> ip_list = MathTools::linspace(-20, 20, 2001);
+    std::shared_ptr<MathTools::NormalCDistribution> 
+        lambda_ptr(new MathTools::NormalCDistribution(7, 2));
+    std::shared_ptr<MathTools::NormalCDistribution> 
+        germ_ptr(new MathTools::NormalCDistribution(0, 1));
+    std::vector<std::shared_ptr<MathTools::NormalCDistribution>> 
+        distributions_num = { lambda_ptr, germ_ptr };
+    std::vector<std::shared_ptr<MathTools::NormalCDistribution>>
+        distributions_den = { germ_ptr };
+    const size_t max_order = 4;
+
+    std::shared_ptr<MathTools::HermitePoly> current_poly_ptr(new MathTools::HermitePoly(0));
+    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_num = { current_poly_ptr };
+    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_den = { current_poly_ptr, current_poly_ptr };
+    std::vector<double> lambda_coeffs;
+    std::vector<double> u_coeffs;
+
+    double num = 0;
+    double denom = 0;
+
+    for (size_t i = 0; i < max_order; i++) {
+        current_poly_ptr->set_order(i);
+        num = MathTools::integrate_product_dist_polys(ip_list, distributions_num, polys_num);
+        denom = MathTools::integrate_product_dist_polys(ip_list, distributions_den, polys_den);
+
+        lambda_coeffs.push_back(num / denom);
+    }
+}
+
 int main(){
     //integrator_test();
     //normal_distribution_test();
@@ -159,6 +189,7 @@ int main(){
     //unif_distribution_test_mean();
     //gamma_distribution_test_parametric();
     //gamma_distribution_test_mean();
-    beta_distribution_test_parametric();
+    //beta_distribution_test_parametric();
     //beta_distribution_test_mean();
+    simple_distribution_test();
 }
