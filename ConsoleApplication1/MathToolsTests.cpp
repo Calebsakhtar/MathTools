@@ -153,31 +153,48 @@ void beta_distribution_test_mean() {
 }
 
 void simple_distribution_test() {
-    const std::vector<double> ip_list = MathTools::linspace(-20, 20, 2001);
+    // Values of the spectral variable eta
+    const std::vector<double> ip_list = MathTools::linspace(-50, 50, 10001);
+
+    // Other variables
+    const size_t max_order = 2; // Maximum order of the orthogonal polynomials used
+    double num = 0; // Numerator value
+    double denom = 0; // Denominator value
+
+    // Distribution shared pointers
     std::shared_ptr<MathTools::NormalCDistribution> 
-        lambda_ptr(new MathTools::NormalCDistribution(7, 2));
+        lambda_ptr(new MathTools::NormalCDistribution(7, 2)); // Uncertain Parameter Distribution
     std::shared_ptr<MathTools::NormalCDistribution> 
-        germ_ptr(new MathTools::NormalCDistribution(0, 1));
+        germ_ptr(new MathTools::NormalCDistribution(0, 1)); // Germ Distribution
+
+    // Orthogonal Polynomials
+    std::shared_ptr<MathTools::HermitePoly> current_poly_ptr(new MathTools::HermitePoly(0));
+
+    // Functions to be evaluated in the numerator of the Galerkin Projection 
     std::vector<std::shared_ptr<MathTools::NormalCDistribution>> 
         distributions_num = { lambda_ptr, germ_ptr };
+    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_num = { current_poly_ptr };
+
+    // Functions to be evaluated in the denominator of the Galerkin Projection
     std::vector<std::shared_ptr<MathTools::NormalCDistribution>>
         distributions_den = { germ_ptr };
-    const size_t max_order = 4;
-
-    std::shared_ptr<MathTools::HermitePoly> current_poly_ptr(new MathTools::HermitePoly(0));
-    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_num = { current_poly_ptr };
-    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_den = { current_poly_ptr, current_poly_ptr };
+    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_den = 
+    { current_poly_ptr, current_poly_ptr };
+    
+    // Storage vectors for the coefficients of the uncertain variables
     std::vector<double> lambda_coeffs;
     std::vector<double> u_coeffs;
 
-    double num = 0;
-    double denom = 0;
-
+    // Loop to find the coefficients of Lambda
     for (size_t i = 0; i < max_order; i++) {
+        // To save memory, only one polynomial is used, and is order is updated
         current_poly_ptr->set_order(i);
+
+        // Evaluate the numerator and denominator of the Galerkin projection for Lambda
         num = MathTools::integrate_product_dist_polys(ip_list, distributions_num, polys_num);
         denom = MathTools::integrate_product_dist_polys(ip_list, distributions_den, polys_den);
 
+        // Store the current coefficient of Lambda
         lambda_coeffs.push_back(num / denom);
     }
 }
