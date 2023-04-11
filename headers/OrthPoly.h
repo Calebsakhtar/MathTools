@@ -35,7 +35,8 @@ namespace MathTools {
 		using OrthPoly::OrthPoly;
 	public:
 		double evaluate(const double x) const{
-			// See documentation: https://en.cppreference.com/w/cpp/numeric/special_functions/legendre			
+			// See documentation: https://en.cppreference.com/w/cpp/numeric/special_functions/legendre
+			if (m_n == 0) { return 1; }
 			return std::legendre(m_n, x);
 		}
 	};
