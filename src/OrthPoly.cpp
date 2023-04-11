@@ -1,4 +1,5 @@
 #include "../headers/OrthPoly.h"
+#include "../headers/MathTools.h"
 
 namespace MathTools {
 

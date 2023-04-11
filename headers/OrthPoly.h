@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <vector>
-#include "MathTools.h"
 
 namespace MathTools {
 
