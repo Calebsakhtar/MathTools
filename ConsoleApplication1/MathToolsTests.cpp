@@ -152,6 +152,29 @@ void beta_distribution_test_mean() {
     MathTools::print_scalar_list(samples, "Samples");
 }
 
+void product_integrator_test() {
+    // Values of the spectral variable eta
+    const std::vector<double> ip_list = MathTools::linspace(-50, 50, 10001);
+
+    // Other variables
+    double result = 0; // Result value
+
+    // Distribution shared pointers
+    std::shared_ptr<MathTools::UniformCDistribution>
+        germ_ptr(new MathTools::UniformCDistribution(0, 1)); // Germ Distribution
+
+    // Orthogonal Polynomials
+    std::shared_ptr<MathTools::LegendrePoly> current_poly_ptr(new MathTools::LegendrePoly(0));
+
+    // Functions to be evaluated in the product integral
+    std::vector<std::shared_ptr<MathTools::UniformCDistribution>>
+        distributions = { germ_ptr };
+    std::vector<std::shared_ptr<MathTools::LegendrePoly>> polys = { current_poly_ptr };
+
+    // Evaluate the product integral
+    result = MathTools::integrate_product_dist_polys(ip_list, distributions, polys);
+}
+
 void galerkin_projection_test() {
     // Values of the spectral variable eta
     const std::vector<double> ip_list = MathTools::linspace(-50, 50, 10001);
@@ -208,5 +231,6 @@ int main(){
     //gamma_distribution_test_mean();
     //beta_distribution_test_parametric();
     //beta_distribution_test_mean();
-    galerkin_projection_test();
+    product_integrator_test();
+    //galerkin_projection_test();
 }
