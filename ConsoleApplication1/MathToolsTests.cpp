@@ -152,13 +152,63 @@ void beta_distribution_test_mean() {
     MathTools::print_scalar_list(samples, "Samples");
 }
 
+void Legendre_Poly_Test() {
+    std::vector<double> x = MathTools::linspace(-2, 2, 201);
+    std::vector<double> P0, P1, P2, P3, P4, P5;
+
+    MathTools::LegendrePoly Poly0(0), Poly1(1), Poly2(2), Poly3(3),
+        Poly4(4), Poly5(5);
+    
+    for (size_t i = 0; i < x.size(); i++) {
+        P0.push_back(Poly0.evaluate(x[i]));
+        P1.push_back(Poly1.evaluate(x[i]));
+        P2.push_back(Poly2.evaluate(x[i]));
+        P3.push_back(Poly3.evaluate(x[i]));
+        P4.push_back(Poly4.evaluate(x[i]));
+        P5.push_back(Poly5.evaluate(x[i]));
+    }
+
+    MathTools::print_scalar_list(x, "xPolynomials");
+    MathTools::print_scalar_list(P0, "Poly00");
+    MathTools::print_scalar_list(P1, "Poly01");
+    MathTools::print_scalar_list(P2, "Poly02");
+    MathTools::print_scalar_list(P3, "Poly03");
+    MathTools::print_scalar_list(P4, "Poly04");
+    MathTools::print_scalar_list(P5, "Poly05");
+}
+
 void Hermite_Poly_Test() {
     std::vector<double> x = MathTools::linspace(-2, 2, 201);
     std::vector<double> P0, P1, P2, P3, P4, P5;
 
     MathTools::HermitePoly Poly0(0), Poly1(1), Poly2(2), Poly3(3),
         Poly4(4), Poly5(5);
-    
+
+    for (size_t i = 0; i < x.size(); i++) {
+        P0.push_back(Poly0.evaluate(x[i]));
+        P1.push_back(Poly1.evaluate(x[i]));
+        P2.push_back(Poly2.evaluate(x[i]));
+        P3.push_back(Poly3.evaluate(x[i]));
+        P4.push_back(Poly4.evaluate(x[i]));
+        P5.push_back(Poly5.evaluate(x[i]));
+    }
+
+    MathTools::print_scalar_list(x, "xPolynomials");
+    MathTools::print_scalar_list(P0, "Poly00");
+    MathTools::print_scalar_list(P1, "Poly01");
+    MathTools::print_scalar_list(P2, "Poly02");
+    MathTools::print_scalar_list(P3, "Poly03");
+    MathTools::print_scalar_list(P4, "Poly04");
+    MathTools::print_scalar_list(P5, "Poly05");
+}
+
+void Laguerre_Poly_Test() {
+    std::vector<double> x = MathTools::linspace(-5, 15, 1001);
+    std::vector<double> P0, P1, P2, P3, P4, P5;
+
+    MathTools::LaguerrePoly Poly0(0), Poly1(1), Poly2(2), Poly3(3),
+        Poly4(4), Poly5(5);
+
     for (size_t i = 0; i < x.size(); i++) {
         P0.push_back(Poly0.evaluate(x[i]));
         P1.push_back(Poly1.evaluate(x[i]));
@@ -256,7 +306,9 @@ int main(){
     //gamma_distribution_test_mean();
     //beta_distribution_test_parametric();
     //beta_distribution_test_mean();
-    Hermite_Poly_Test();
+    //Legendre_Poly_Test();
+    //Hermite_Poly_Test();
+    //Laguerre_Poly_Test();
     //product_integrator_test();
     //galerkin_projection_test();
 }
