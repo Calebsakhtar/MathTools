@@ -227,6 +227,32 @@ void Laguerre_Poly_Test() {
     MathTools::print_scalar_list(P5, "Poly05");
 }
 
+void Jacobi_Poly_Test() {
+    std::vector<double> x = MathTools::linspace(-2, 2, 201);
+    std::vector<double> P0, P1, P2, P3, P4, P5;
+
+    MathTools::JacobiPoly Poly0(0, -0.5, -0.5), Poly1(1, -0.5, -0.5), 
+        Poly2(2, -0.5, -0.5), Poly3(3, -0.5, -0.5), Poly4(4, -0.5, -0.5),
+        Poly5(5, -0.5, -0.5);
+
+    for (size_t i = 0; i < x.size(); i++) {
+        P0.push_back(Poly0.evaluate(x[i]));
+        P1.push_back(Poly1.evaluate(x[i]) * pow(2, 2) / MathTools::nChoosek_gamma(2, 1));
+        P2.push_back(Poly2.evaluate(x[i]) * pow(2, 4) / MathTools::nChoosek_gamma(4, 2));
+        P3.push_back(Poly3.evaluate(x[i]) * pow(2, 6) / MathTools::nChoosek_gamma(6, 3));
+        P4.push_back(Poly4.evaluate(x[i]) * pow(2, 8) / MathTools::nChoosek_gamma(8, 4));
+        P5.push_back(Poly5.evaluate(x[i]) * pow(2, 10) / MathTools::nChoosek_gamma(10, 5));
+    }
+
+    MathTools::print_scalar_list(x, "xPolynomials");
+    MathTools::print_scalar_list(P0, "Poly00");
+    MathTools::print_scalar_list(P1, "Poly01");
+    MathTools::print_scalar_list(P2, "Poly02");
+    MathTools::print_scalar_list(P3, "Poly03");
+    MathTools::print_scalar_list(P4, "Poly04");
+    MathTools::print_scalar_list(P5, "Poly05");
+}
+
 void product_integrator_test() {
     // Values of the spectral variable eta
     const std::vector<double> ip_list = MathTools::linspace(-50, 50, 10001);
@@ -309,6 +335,7 @@ int main(){
     //Legendre_Poly_Test();
     //Hermite_Poly_Test();
     //Laguerre_Poly_Test();
+    Jacobi_Poly_Test();
     //product_integrator_test();
     //galerkin_projection_test();
 }
