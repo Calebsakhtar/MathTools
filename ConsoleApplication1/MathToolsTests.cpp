@@ -269,8 +269,42 @@ void product_integrator_test() {
 
     // Functions to be evaluated in the product integral
     std::vector<std::shared_ptr<MathTools::UniformCDistribution>>
-        distributions = { germ_ptr };
-    std::vector<std::shared_ptr<MathTools::LegendrePoly>> polys = { current_poly_ptr };
+        distributions;
+    distributions.push_back(std::move(germ_ptr));
+
+    std::vector<std::shared_ptr<MathTools::LegendrePoly>> polys;
+    polys.push_back(std::move(current_poly_ptr));
+
+    // Evaluate the product integral
+    result = MathTools::integrate_product_dist_polys(ip_list, distributions, polys);
+}
+
+void orthogonal_product_test() {
+    // Values of the spectral variable eta
+    const std::vector<double> ip_list = MathTools::linspace(-2, 2, 10001);
+
+    // Other variables
+    double result = 0; // Result value
+
+    // Distribution shared pointers
+    std::shared_ptr<MathTools::UniformCDistribution>
+        germ_ptr(new MathTools::UniformCDistribution(0, 1)); // Germ Distribution
+    std::shared_ptr<MathTools::UniformCDistribution>
+        germ_ptr2(new MathTools::UniformCDistribution(-5, 5)); // Germ Distribution
+
+    // Orthogonal Polynomials
+    std::shared_ptr<MathTools::LegendrePoly> poly_ptr_2(new MathTools::LegendrePoly(2));
+    std::shared_ptr<MathTools::LegendrePoly> poly_ptr_4(new MathTools::LegendrePoly(4));
+
+    // Functions to be evaluated in the product integral
+    std::vector<std::shared_ptr<MathTools::UniformCDistribution>>
+        distributions;
+    distributions.push_back(std::move(germ_ptr));
+    distributions.push_back(std::move(germ_ptr2));
+
+    std::vector<std::shared_ptr<MathTools::LegendrePoly>> polys;
+    polys.push_back(std::move(poly_ptr_2));
+    polys.push_back(std::move(poly_ptr_4));
 
     // Evaluate the product integral
     result = MathTools::integrate_product_dist_polys(ip_list, distributions, polys);
@@ -290,20 +324,30 @@ void galerkin_projection_test() {
         lambda_ptr(new MathTools::NormalCDistribution(7, 2)); // Uncertain Parameter Distribution
     std::shared_ptr<MathTools::NormalCDistribution> 
         germ_ptr(new MathTools::NormalCDistribution(0, 1)); // Germ Distribution
+    auto germ_ptr_den(germ_ptr);
 
     // Orthogonal Polynomials
     std::shared_ptr<MathTools::HermitePoly> current_poly_ptr(new MathTools::HermitePoly(0));
+    auto poly_ptr_den(current_poly_ptr);
+    auto poly_ptr_den_2(current_poly_ptr);
 
     // Functions to be evaluated in the numerator of the Galerkin Projection 
     std::vector<std::shared_ptr<MathTools::NormalCDistribution>> 
-        distributions_num = { lambda_ptr, germ_ptr };
-    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_num = { current_poly_ptr };
+        distributions_num;
+    distributions_num.push_back(std::move(lambda_ptr));
+    distributions_num.push_back(std::move(germ_ptr));
+
+    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_num;
+    polys_num.push_back(std::move(current_poly_ptr));
 
     // Functions to be evaluated in the denominator of the Galerkin Projection
     std::vector<std::shared_ptr<MathTools::NormalCDistribution>>
-        distributions_den = { germ_ptr };
-    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_den = 
-    { current_poly_ptr, current_poly_ptr };
+        distributions_den;
+    distributions_den.push_back(std::move(germ_ptr_den));
+
+    std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_den;
+    polys_den.push_back(std::move(poly_ptr_den));
+    polys_den.push_back(std::move(poly_ptr_den_2));
     
     // Storage vectors for the coefficients of the uncertain variables
     std::vector<double> lambda_coeffs;
@@ -335,7 +379,8 @@ int main(){
     //Legendre_Poly_Test();
     //Hermite_Poly_Test();
     //Laguerre_Poly_Test();
-    Jacobi_Poly_Test();
+    //Jacobi_Poly_Test();
     //product_integrator_test();
+    orthogonal_product_test();
     //galerkin_projection_test();
 }
