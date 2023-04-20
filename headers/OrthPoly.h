@@ -9,6 +9,7 @@ namespace MathTools {
 	class OrthPoly {
 	protected:
 		size_t m_n; // Polynomial order
+		std::vector<double> m_coeffs = {};
 
 	public:
 		OrthPoly() {};
@@ -30,15 +31,22 @@ namespace MathTools {
 	};
 
 	// *********** LEGENDRE POLYNOMIALS *********** //
-	class LegendrePoly: public OrthPoly {
-		// Use the same constructors as OrthPoly
-		using OrthPoly::OrthPoly;
+	class LegendrePoly : public OrthPoly {
+
 	public:
-		double evaluate(const double x) const{
-			// See documentation: https://en.cppreference.com/w/cpp/numeric/special_functions/legendre
-			if (m_n == 0) { return 1; }
-			return std::legendre(m_n, x);
-		}
+		LegendrePoly() {};
+
+		// Use the summation expression for the Legendre polynomials
+		// to store the relevant coefficients.
+		//
+		// See: https://en.wikipedia.org/wiki/Legendre_polynomials#Rodrigues'_formula_and_other_explicit_formulas
+		LegendrePoly(const size_t n);
+
+		// Evaluate the summation form of the Legendre polynomial 
+		// using the stored coefficients.
+		//
+		// See: https://en.wikipedia.org/wiki/Legendre_polynomials#Rodrigues'_formula_and_other_explicit_formulas
+		double evaluate(const double x) const;
 	};
 
 	// *********** HERMITE POLYNOMIALS *********** //
@@ -67,7 +75,6 @@ namespace MathTools {
 	class JacobiPoly : public OrthPoly {
 		double m_alpha = 0; // parameter alpha
 		double m_beta = 0; // parameter beta
-		std::vector<double> m_coeffs = {};
 
 	public:
 		JacobiPoly() {};
