@@ -181,7 +181,7 @@ namespace TestSuite {
     }
 
     void Hermite_Poly_Test() {
-        std::vector<double> x = MathTools::linspace(-2, 2, 201);
+        std::vector<double> x = MathTools::linspace(-4, 4, 201);
         std::vector<double> P0, P1, P2, P3, P4, P5;
 
         MathTools::HermitePoly Poly0(0), Poly1(1), Poly2(2), Poly3(3),
@@ -282,30 +282,55 @@ namespace TestSuite {
         result = MathTools::integrate_product_dist_polys(ip_list, distributions, polys);
     }
 
-    void orthogonal_product_test() {
+    void orthogonal_product_legendre_test() {
         // Values of the spectral variable eta
-        const std::vector<double> ip_list = MathTools::linspace(-2, 2, 10001);
+        const std::vector<double> ip_list = MathTools::linspace(-1, 1, 10001);
 
         // Other variables
         double result = 0; // Result value
 
         // Distribution shared pointers
         std::shared_ptr<MathTools::UniformCDistribution>
-            germ_ptr(new MathTools::UniformCDistribution(0, 1)); // Germ Distribution
-        std::shared_ptr<MathTools::UniformCDistribution>
-            germ_ptr2(new MathTools::UniformCDistribution(-5, 5)); // Germ Distribution
+            germ_ptr(new MathTools::UniformCDistribution(-1, 1)); // Germ Distribution
 
         // Orthogonal Polynomials
-        std::shared_ptr<MathTools::LegendrePoly> poly_ptr_2(new MathTools::LegendrePoly(2));
-        std::shared_ptr<MathTools::LegendrePoly> poly_ptr_4(new MathTools::LegendrePoly(4));
+        std::shared_ptr<MathTools::LegendrePoly> poly_ptr_2(new MathTools::LegendrePoly(1));
+        std::shared_ptr<MathTools::LegendrePoly> poly_ptr_4(new MathTools::LegendrePoly(2));
 
         // Functions to be evaluated in the product integral
         std::vector<std::shared_ptr<MathTools::UniformCDistribution>>
             distributions;
         distributions.push_back(std::move(germ_ptr));
-        distributions.push_back(std::move(germ_ptr2));
 
         std::vector<std::shared_ptr<MathTools::LegendrePoly>> polys;
+        polys.push_back(std::move(poly_ptr_2));
+        polys.push_back(std::move(poly_ptr_4));
+
+        // Evaluate the product integral
+        result = MathTools::integrate_product_dist_polys(ip_list, distributions, polys);
+    }
+
+    void orthogonal_product_hermite_test() {
+        // Values of the spectral variable eta
+        const std::vector<double> ip_list = MathTools::linspace(-1, 1, 10001);
+
+        // Other variables
+        double result = 0; // Result value
+
+        // Distribution shared pointers
+        std::shared_ptr<MathTools::NormalCDistribution>
+            germ_ptr(new MathTools::NormalCDistribution(0, 1)); // Germ Distribution
+
+        // Orthogonal Polynomials
+        std::shared_ptr<MathTools::HermitePoly> poly_ptr_2(new MathTools::HermitePoly(1));
+        std::shared_ptr<MathTools::HermitePoly> poly_ptr_4(new MathTools::HermitePoly(2));
+
+        // Functions to be evaluated in the product integral
+        std::vector<std::shared_ptr<MathTools::NormalCDistribution>>
+            distributions;
+        distributions.push_back(std::move(germ_ptr));
+
+        std::vector<std::shared_ptr<MathTools::HermitePoly>> polys;
         polys.push_back(std::move(poly_ptr_2));
         polys.push_back(std::move(poly_ptr_4));
 

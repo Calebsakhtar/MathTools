@@ -21,13 +21,17 @@ namespace TestSuite {
 
 	void Legendre_Poly_Test();
 
+	void Hermite_Poly_Test();
+
 	void Laguerre_Poly_Test();
 
 	void Jacobi_Poly_Test();
 
 	void product_integrator_test();
 
-	void orthogonal_product_test();
+	void orthogonal_product_legendre_test();
+
+	void orthogonal_product_hermite_test();
 
 	void galerkin_projection_test();
 }
