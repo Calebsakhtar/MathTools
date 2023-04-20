@@ -32,7 +32,6 @@ namespace MathTools {
 
 	// *********** LEGENDRE POLYNOMIALS *********** //
 	class LegendrePoly : public OrthPoly {
-
 	public:
 		LegendrePoly() {};
 
@@ -51,13 +50,16 @@ namespace MathTools {
 
 	// *********** HERMITE POLYNOMIALS *********** //
 	class HermitePoly : public OrthPoly {
-		// Use the same constructors as OrthPoly
-		using OrthPoly::OrthPoly;
 	public:
-		double evaluate(const double x) const{
-			// See documentation: https://en.cppreference.com/w/cpp/numeric/special_functions/hermite
-			return std::hermite(m_n, x);
-		}
+		HermitePoly() {};
+
+		// Use the summation expression for the Hermite polynomials
+		// to store the relevant coefficients.
+		//
+		// See: https://en.wikipedia.org/wiki/Hermite_polynomials#Explicit_expression
+		HermitePoly(const size_t n);
+
+		double evaluate(const double x) const;
 	};
 
 	// *********** LAGUERRE POLYNOMIALS *********** //
