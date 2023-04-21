@@ -25,8 +25,19 @@ namespace MathTools {
 	// Prints a list of vectors into a ".csv" file
 	void print_vector_list(const std::vector<Eigen::VectorXd>& vect_list,
 		const std::string& filename);
+	
+	// Returns the factorial of an integer-like input.
+	// The type of the output matches that of the input.
+	template <typename int_type>
+	int_type factorial(const int_type n);
 
-		// Computes the binomial coefficient (n choose k), i.e. the
+	// Returns the value of the gamma function at the input plus one.
+	// For positive integers, this is equivalent to computing the factorial.
+	//
+	// The input and output types are double.
+	double factorial_gamma(const double n);
+
+	// Computes the binomial coefficient (n choose k), i.e. the
 	// number of ways to choose k objects from a set of n objects.
 	//
 	// This code has been taken directly from https://stackoverflow.com/a/9331125

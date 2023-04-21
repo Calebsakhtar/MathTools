@@ -65,6 +65,20 @@ namespace MathTools {
 		Opfile.close();
 	}
 
+	template <typename int_type>
+	int_type factorial(const int_type n) {
+		// Returns the factorial of an integer-like input.
+		// The type of the output matches that of the input.
+
+		int_type soln = n;
+
+		for (int_type i = n - 1; i > 1; i--){
+			soln *= i;
+		}
+
+		return soln;
+	}
+
 	size_t nChoosek(const size_t n, size_t k) {
 		// Computes the binomial coefficient (n choose k), i.e. the
 		//  number of ways to choose k objects from a set of n objects.
@@ -121,6 +135,7 @@ namespace MathTools {
 
 		return result;
 	}
+
 	template <typename Dist, typename Poly>
 	double integrate_product_dist_polys(const std::vector<double>& ip_list,
 		std::vector<std::shared_ptr<Dist>> ip_distributions,
@@ -167,6 +182,13 @@ namespace MathTools {
 
 		return result.back();
 	}
+
+	// Template function instantiations
+	template
+		int factorial(const int n);
+
+	template
+		size_t factorial(const size_t n);
 
 	template
 	double integrate_product_dist_polys(const std::vector<double>& ip_list,
