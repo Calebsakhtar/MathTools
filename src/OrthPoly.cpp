@@ -144,6 +144,50 @@ namespace MathTools {
 		return result;
 	}
 
+	// *********** LAGUERRE POLYNOMIALS *********** //
+	LaguerrePoly::LaguerrePoly(const size_t n) {
+		// Use the summation expression for the Laguerre polynomials
+		// to store the relevant coefficients.
+		//
+		// See: https://en.wikipedia.org/wiki/Laguerre_polynomials#Recursive_definition,_closed_form,_and_generating_function
+
+		m_n = n;
+		const double n_double = static_cast<double>(n);
+
+		double k_double = 0;
+		double coeff = 0;
+
+		// Loop from 0 to n, both inclusive
+		for (size_t k = 0; k < n + 1; k++) {
+			k_double = static_cast<double>(k);
+			coeff = nChoosek_gamma(n_double, k_double);
+			coeff /= factorial_gamma(k_double);
+
+			// If k is odd, make the coefficient negative
+			if (k % 2 == 1) { coeff *= -1; }
+
+			m_coeffs.push_back(coeff);
+		}
+	}
+
+	double LaguerrePoly::evaluate(const double x) const {
+		// Evaluate the summation form of the Laguerre polynomial 
+		// using the stored coefficients.
+		//
+		// See: https://en.wikipedia.org/wiki/Laguerre_polynomials#Recursive_definition,_closed_form,_and_generating_function
+
+		double result = 0;
+		double k_double = 0;
+		const double n_double = static_cast<double>(m_n);
+
+		for (size_t k = 0; k < m_coeffs.size(); k++) {
+			k_double = static_cast<double>(k);
+			result += m_coeffs[k] * pow(x, k_double);
+		}
+
+		return result;
+	}
+
 	// *********** JACOBI POLYNOMIALS *********** //
 	JacobiPoly::JacobiPoly(const size_t n, const double alpha,
 		const double beta) {

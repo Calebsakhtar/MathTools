@@ -64,13 +64,20 @@ namespace MathTools {
 
 	// *********** LAGUERRE POLYNOMIALS *********** //
 	class LaguerrePoly : public OrthPoly {
-		// Use the same constructors as OrthPoly
-		using OrthPoly::OrthPoly;
 	public:
-		double evaluate(const double x) const{
-			// See documentation: https://en.cppreference.com/w/cpp/numeric/special_functions/laguerre
-			return std::laguerre(m_n, x);
-		}
+		LaguerrePoly() {};
+
+		// Use the summation expression for the Laguerre polynomials
+		// to store the relevant coefficients.
+		//
+		// See: https://en.wikipedia.org/wiki/Laguerre_polynomials#Recursive_definition,_closed_form,_and_generating_function
+		LaguerrePoly(const size_t n);
+
+		// Evaluate the summation form of the Laguerre polynomial 
+		// using the stored coefficients.
+		//
+		// See: https://en.wikipedia.org/wiki/Laguerre_polynomials#Recursive_definition,_closed_form,_and_generating_function
+		double evaluate(const double x) const;
 	};
 
 	// *********** JACOBI POLYNOMIALS *********** //
