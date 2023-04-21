@@ -79,6 +79,17 @@ namespace MathTools {
 		return soln;
 	}
 
+	double factorial_gamma(const double n) {
+		// Returns the value of the gamma function at the input plus one.
+		// For positive integers, this is equivalent to computing the factorial.
+		//
+		// See for more details: https://www.cantorsparadise.com/the-beautiful-gamma-function-and-the-genius-who-discovered-it-8778437565dc
+		// 
+		// The input and output types are double.
+
+		return tgamma(n + 1);
+	}
+
 	size_t nChoosek(const size_t n, size_t k) {
 		// Computes the binomial coefficient (n choose k), i.e. the
 		//  number of ways to choose k objects from a set of n objects.
