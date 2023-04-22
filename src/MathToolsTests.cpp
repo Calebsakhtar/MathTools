@@ -1,16 +1,21 @@
 #include "../headers/MathToolsTests.h"
 #include "../headers/MathTools.h"
 
+#include <iostream>
+
 namespace TestSuite {
 
     double f(double x) {
         return x;
     }
 
-    void integrator_test() {
+    bool integrator_test() {
         std::vector<double> x = MathTools::linspace(0, 10, 101);
         std::vector<double> x_integ_analytic = MathTools::linspace(0, 10, 101);
         std::vector<double> x_integ_numeric;
+        bool test_result = true;
+        double current_diff = 0;
+        const double tol = 1e-6;
 
         for (size_t i = 0; i < x.size(); i++) {
             x_integ_analytic[i] = 0.5 * x_integ_analytic[i] * x_integ_analytic[i];
@@ -21,9 +26,18 @@ namespace TestSuite {
         MathTools::print_scalar_list(x, "x");
         MathTools::print_scalar_list(x_integ_analytic, "xAnalytic");
         MathTools::print_scalar_list(x_integ_numeric, "xNumeric");
+
+        for (size_t i = 0; i < x.size(); i++) {
+            current_diff = abs(x_integ_analytic[i] - x_integ_numeric[i]);
+            test_result &= current_diff < tol;
+        }
+
+        std::cout << "Graphical test required for 'integrator_test()'" << std::endl;
+
+        return test_result;
     }
 
-    void normal_distribution_test() {
+    bool normal_distribution_test() {
         std::vector<double> x = MathTools::linspace(2, 8, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
@@ -39,9 +53,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(x, "xDistribution");
         MathTools::print_scalar_list(PDF_values, "PDF");
         MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'normal_distribution_test()'" << std::endl;
+
+        return true;
     }
 
-    void unif_distribution_test_parametric() {
+    bool unif_distribution_test_parametric() {
         std::vector<double> x = MathTools::linspace(0, 6, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
@@ -57,9 +75,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(x, "xDistribution");
         MathTools::print_scalar_list(PDF_values, "PDF");
         MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'unif_distribution_test_parametric()'" << std::endl;
+
+        return true;
     }
 
-    void unif_distribution_test_mean() {
+    bool unif_distribution_test_mean() {
         std::vector<double> x = MathTools::linspace(0, 6, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
@@ -77,9 +99,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(x, "xDistribution");
         MathTools::print_scalar_list(PDF_values, "PDF");
         MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'unif_distribution_test_mean()'" << std::endl;
+
+        return true;
     }
 
-    void gamma_distribution_test_parametric() {
+    bool gamma_distribution_test_parametric() {
         std::vector<double> x = MathTools::linspace(0, 6, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
@@ -95,9 +121,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(x, "xDistribution");
         MathTools::print_scalar_list(PDF_values, "PDF");
         MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'gamma_distribution_test_parametric()'" << std::endl;
+
+        return true;
     }
 
-    void gamma_distribution_test_mean() {
+    bool gamma_distribution_test_mean() {
         std::vector<double> x = MathTools::linspace(0, 6, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
@@ -115,9 +145,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(x, "xDistribution");
         MathTools::print_scalar_list(PDF_values, "PDF");
         MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'gamma_distribution_test_mean()'" << std::endl;
+
+        return true;
     }
 
-    void beta_distribution_test_parametric() {
+    bool beta_distribution_test_parametric() {
         std::vector<double> x = MathTools::linspace(0, 1, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
@@ -133,9 +167,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(x, "xDistribution");
         MathTools::print_scalar_list(PDF_values, "PDF");
         MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'beta_distribution_test_parametric()'" << std::endl;
+
+        return true;
     }
 
-    void beta_distribution_test_mean() {
+    bool beta_distribution_test_mean() {
         std::vector<double> x = MathTools::linspace(0, 1, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
@@ -153,9 +191,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(x, "xDistribution");
         MathTools::print_scalar_list(PDF_values, "PDF");
         MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'beta_distribution_test_mean()'" << std::endl;
+
+        return true;
     }
 
-    void Legendre_Poly_Test() {
+    bool Legendre_Poly_Test() {
         std::vector<double> x = MathTools::linspace(-2, 2, 201);
         std::vector<double> P0, P1, P2, P3, P4, P5;
 
@@ -178,9 +220,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(P3, "Poly03");
         MathTools::print_scalar_list(P4, "Poly04");
         MathTools::print_scalar_list(P5, "Poly05");
+
+        std::cout << "Graphical test required for 'Legendre_Poly_Test()'" << std::endl;
+
+        return true;
     }
 
-    void Hermite_Poly_Test() {
+    bool Hermite_Poly_Test() {
         std::vector<double> x = MathTools::linspace(-4, 4, 201);
         std::vector<double> P0, P1, P2, P3, P4, P5;
 
@@ -203,9 +249,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(P3, "Poly03");
         MathTools::print_scalar_list(P4, "Poly04");
         MathTools::print_scalar_list(P5, "Poly05");
+
+        std::cout << "Graphical test required for 'Hermite_Poly_Test()'" << std::endl;
+
+        return true;
     }
 
-    void Laguerre_Poly_Test() {
+    bool Laguerre_Poly_Test() {
         std::vector<double> x = MathTools::linspace(-5, 15, 1001);
         std::vector<double> P0, P1, P2, P3, P4, P5;
 
@@ -228,9 +278,13 @@ namespace TestSuite {
         MathTools::print_scalar_list(P3, "Poly03");
         MathTools::print_scalar_list(P4, "Poly04");
         MathTools::print_scalar_list(P5, "Poly05");
+
+        std::cout << "Graphical test required for 'Laguerre_Poly_Test()'" << std::endl;
+
+        return true;
     }
 
-    void Jacobi_Poly_Test() {
+    bool Jacobi_Poly_Test() {
         std::vector<double> x = MathTools::linspace(-2, 2, 201);
         std::vector<double> P0, P1, P2, P3, P4, P5;
 
@@ -254,9 +308,15 @@ namespace TestSuite {
         MathTools::print_scalar_list(P3, "Poly03");
         MathTools::print_scalar_list(P4, "Poly04");
         MathTools::print_scalar_list(P5, "Poly05");
+
+        std::cout << "Graphical test required for 'Jacobi_Poly_Test()'" << std::endl;
+
+        return true;
     }
 
-    void product_integrator_test() {
+    bool product_integrator_test() {
+        // NEEDS EDITING        
+
         // Values of the spectral variable eta
         const std::vector<double> ip_list = MathTools::linspace(-50, 50, 10001);
 
@@ -280,9 +340,11 @@ namespace TestSuite {
 
         // Evaluate the product integral
         result = MathTools::integrate_product_dist_polys(ip_list, distributions, polys);
+
+        return true;
     }
 
-    void orthogonal_product_legendre_test() {
+    bool orthogonal_product_legendre_test() {
         // Values of the spectral variable eta
         const std::vector<double> ip_list = MathTools::linspace(-1, 1, 10001);
 
@@ -308,9 +370,13 @@ namespace TestSuite {
 
         // Evaluate the product integral
         result = MathTools::integrate_product_dist_polys(ip_list, distributions, polys);
+
+        if (abs(result) < 1e6) { return true; }
+        
+        return false;
     }
 
-    void orthogonal_product_hermite_test() {
+    bool orthogonal_product_hermite_test() {
         // Values of the spectral variable eta
         const std::vector<double> ip_list = MathTools::linspace(-1, 1, 10001);
 
@@ -336,9 +402,46 @@ namespace TestSuite {
 
         // Evaluate the product integral
         result = MathTools::integrate_product_dist_polys(ip_list, distributions, polys);
+
+        if (abs(result) < 1e6) { return true; }
+
+        return false;
     }
 
-    void galerkin_projection_test() {
+    bool orthogonal_product_laguerre_test() {
+        // Values of the spectral variable eta
+        const std::vector<double> ip_list = MathTools::linspace(-1, 100, 100001);
+
+        // Other variables
+        double result = 0; // Result value
+
+        // Distribution shared pointers
+        std::shared_ptr<MathTools::GammaCDistribution>
+            germ_ptr(new MathTools::GammaCDistribution()); // Germ Distribution
+        germ_ptr->set_params_mean_stdev(0, 1);
+
+        // Orthogonal Polynomials
+        std::shared_ptr<MathTools::LaguerrePoly> poly_ptr_2(new MathTools::LaguerrePoly(1));
+        std::shared_ptr<MathTools::LaguerrePoly> poly_ptr_4(new MathTools::LaguerrePoly(2));
+
+        // Functions to be evaluated in the product integral
+        std::vector<std::shared_ptr<MathTools::GammaCDistribution>>
+            distributions;
+        distributions.push_back(std::move(germ_ptr));
+
+        std::vector<std::shared_ptr<MathTools::LaguerrePoly>> polys;
+        polys.push_back(std::move(poly_ptr_2));
+        polys.push_back(std::move(poly_ptr_4));
+
+        // Evaluate the product integral
+        result = MathTools::integrate_product_dist_polys(ip_list, distributions, polys);
+
+        if (abs(result) < 1e6) { return true; }
+
+        return false;
+    }
+
+    bool galerkin_projection_test() {
         // Values of the spectral variable eta
         const std::vector<double> ip_list = MathTools::linspace(-50, 50, 10001);
 
@@ -393,6 +496,8 @@ namespace TestSuite {
             // Store the current coefficient of Lambda
             lambda_coeffs.push_back(num / denom);
         }
+
+        return true;
     }
 
 }

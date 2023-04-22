@@ -3,37 +3,39 @@
 
 namespace TestSuite {
 
-	void integrator_test();
+	bool integrator_test();
 
-	void normal_distribution_test();
+	bool normal_distribution_test();
 
-	void unif_distribution_test_parametric();
+	bool unif_distribution_test_parametric();
 
-	void unif_distribution_test_mean();
+	bool unif_distribution_test_mean();
 
-	void gamma_distribution_test_parametric();
+	bool gamma_distribution_test_parametric();
 
-	void gamma_distribution_test_mean();
+	bool gamma_distribution_test_mean();
 
-	void beta_distribution_test_parametric();
+	bool beta_distribution_test_parametric();
 
-	void beta_distribution_test_mean();
+	bool beta_distribution_test_mean();
 
-	void Legendre_Poly_Test();
+	bool Legendre_Poly_Test();
 
-	void Hermite_Poly_Test();
+	bool Hermite_Poly_Test();
 
-	void Laguerre_Poly_Test();
+	bool Laguerre_Poly_Test();
 
-	void Jacobi_Poly_Test();
+	bool Jacobi_Poly_Test();
 
-	void product_integrator_test();
+	bool product_integrator_test();
 
-	void orthogonal_product_legendre_test();
+	bool orthogonal_product_legendre_test();
 
-	void orthogonal_product_hermite_test();
+	bool orthogonal_product_hermite_test();
 
-	void galerkin_projection_test();
+	bool orthogonal_product_laguerre_test();
+
+	bool galerkin_projection_test();
 }
 
 #endif
