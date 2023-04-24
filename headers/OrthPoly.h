@@ -27,6 +27,10 @@ namespace MathTools {
 		void set_order(const size_t n){
 			m_n = n;
 		};
+
+		std::vector<double> get_coeffs() const {
+			return m_coeffs;
+		}
 		
 	};
 
