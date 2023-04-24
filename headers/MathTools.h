@@ -30,6 +30,15 @@ namespace MathTools {
 	//
 	// The input tol is optional, and has a default value of 1e-6.
 	bool is_same_double(const double A, const double B, const double tol = 1e-6);
+
+	// Given two std::vector of doubles, this function returns whether their elements are within
+	// tol of each other.
+	//
+	// The input tol is optional, and has a default value of 1e-6.
+	// 
+	// Returns fals if the inputs are of different lengths.
+	bool is_same_double_list(const std::vector<double>& list_A, const std::vector<double>& list_B,
+		const double tol = 1e-6);
 	
 	// Returns the factorial of an integer-like input.
 	// The type of the output matches that of the input.

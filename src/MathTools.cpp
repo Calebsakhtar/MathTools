@@ -73,6 +73,29 @@ namespace MathTools {
 		return abs(A - B) < tol;
 	}
 
+	bool is_same_double_list(const std::vector<double>& list_A, const std::vector<double>& list_B,
+		const double tol) {
+		// Given two std::vector of doubles, this function returns whether their elements are within
+		// tol of each other.
+		//
+		// The input tol is optional, and has a default value of 1e-6.
+		// 
+		// Returns fals if the inputs are of different lengths.
+
+		// Return false first if the inputs are of different sizes so no resources are wasted
+		if (list_A.size() != list_B.size()) { return false; }
+
+		bool result = true;
+		size_t i = 0;
+
+		while (result && (i < list_A.size()) ) {
+			result &= is_same_double(list_A[i], list_B[i], tol);
+			i++;
+		}
+
+		return result;
+	}
+
 	template <typename int_type>
 	int_type factorial(const int_type n) {
 		// Returns the factorial of an integer-like input.
