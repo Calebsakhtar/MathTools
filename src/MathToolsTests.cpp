@@ -197,7 +197,7 @@ namespace TestSuite {
         return true;
     }
 
-    bool Legendre_Poly_Test() {
+    bool legendre_poly_test() {
         std::vector<double> x = MathTools::linspace(-2, 2, 201);
         std::vector<double> P0, P1, P2, P3, P4, P5;
 
@@ -221,12 +221,12 @@ namespace TestSuite {
         MathTools::print_scalar_list(P4, "Poly04");
         MathTools::print_scalar_list(P5, "Poly05");
 
-        std::cout << "Graphical test required for 'Legendre_Poly_Test()'" << std::endl;
+        std::cout << "Graphical test required for 'legendre_poly_test()'" << std::endl;
 
         return true;
     }
 
-    bool Hermite_Poly_Test() {
+    bool hermite_poly_test() {
         std::vector<double> x = MathTools::linspace(-4, 4, 201);
         std::vector<double> P0, P1, P2, P3, P4, P5;
 
@@ -250,12 +250,12 @@ namespace TestSuite {
         MathTools::print_scalar_list(P4, "Poly04");
         MathTools::print_scalar_list(P5, "Poly05");
 
-        std::cout << "Graphical test required for 'Hermite_Poly_Test()'" << std::endl;
+        std::cout << "Graphical test required for 'hermite_poly_test()'" << std::endl;
 
         return true;
     }
 
-    bool Laguerre_Poly_Test() {
+    bool laguerre_poly_test() {
         std::vector<double> x = MathTools::linspace(-5, 15, 1001);
         std::vector<double> P0, P1, P2, P3, P4, P5;
 
@@ -279,12 +279,12 @@ namespace TestSuite {
         MathTools::print_scalar_list(P4, "Poly04");
         MathTools::print_scalar_list(P5, "Poly05");
 
-        std::cout << "Graphical test required for 'Laguerre_Poly_Test()'" << std::endl;
+        std::cout << "Graphical test required for 'laguerre_poly_test()'" << std::endl;
 
         return true;
     }
 
-    bool Jacobi_Poly_Test() {
+    bool jacobi_poly_test() {
         std::vector<double> x = MathTools::linspace(-2, 2, 201);
         std::vector<double> P0, P1, P2, P3, P4, P5;
 
@@ -309,7 +309,7 @@ namespace TestSuite {
         MathTools::print_scalar_list(P4, "Poly04");
         MathTools::print_scalar_list(P5, "Poly05");
 
-        std::cout << "Graphical test required for 'Jacobi_Poly_Test()'" << std::endl;
+        std::cout << "Graphical test required for 'jacobi_poly_test()'" << std::endl;
 
         return true;
     }

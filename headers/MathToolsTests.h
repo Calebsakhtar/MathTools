@@ -1,5 +1,5 @@
-#ifndef H_MATH_TOOLS_TESTS
-#define H_MATH_TOOLS_TESTS
+#ifndef H_MATH_TOOLS_testS
+#define H_MATH_TOOLS_testS
 
 namespace TestSuite {
 
@@ -19,13 +19,13 @@ namespace TestSuite {
 
 	bool beta_distribution_test_mean();
 
-	bool Legendre_Poly_Test();
+	bool legendre_poly_test();
 
-	bool Hermite_Poly_Test();
+	bool hermite_poly_test();
 
-	bool Laguerre_Poly_Test();
+	bool laguerre_poly_test();
 
-	bool Jacobi_Poly_Test();
+	bool jacobi_poly_test();
 
 	bool product_integrator_test();
 
