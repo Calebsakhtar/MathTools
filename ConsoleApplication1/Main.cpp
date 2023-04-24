@@ -14,7 +14,7 @@ int main() {
     //TestSuite::gamma_distribution_test_mean();
     //TestSuite::beta_distribution_test_parametric();
     //TestSuite::beta_distribution_test_mean();
-    //TestSuite::Legendre_poly_test();
+    //TestSuite::legendre_poly_test();
     //TestSuite::hermite_poly_test();
     //TestSuite::laguerre_poly_test();
     //TestSuite::jacobi_poly_test();
