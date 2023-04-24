@@ -12,6 +12,14 @@ typedef double(*SISO_scalar_function)(const double); // Single-Input Single-Outp
 
 namespace MathTools {
 
+	// Prints a list of scalars into a ".csv" file
+	void print_scalar_list(const std::vector<double>& scalar_list,
+		const std::string& filename);
+
+	// Prints a list of vectors into a ".csv" file
+	void print_vector_list(const std::vector<Eigen::VectorXd>& vect_list,
+		const std::string& filename);
+
 	// Returns a std::vector containing num_points evenly spaced between start_val and end_val.
 	//
 	// num_points is inclusive of start_val and end_val
@@ -22,14 +30,6 @@ namespace MathTools {
 	//
 	// The input tol is optional, and has a default value of 1e-6.
 	bool is_same_double(const double A, const double B, const double tol = 1e-6);
-
-	// Prints a list of scalars into a ".csv" file
-	void print_scalar_list(const std::vector<double>& scalar_list,
-		const std::string& filename);
-
-	// Prints a list of vectors into a ".csv" file
-	void print_vector_list(const std::vector<Eigen::VectorXd>& vect_list,
-		const std::string& filename);
 	
 	// Returns the factorial of an integer-like input.
 	// The type of the output matches that of the input.
