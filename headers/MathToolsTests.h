@@ -1,5 +1,5 @@
-#ifndef H_MATH_TOOLS_testS
-#define H_MATH_TOOLS_testS
+#ifndef H_MATH_TOOLS_TESTS
+#define H_MATH_TOOLS_TESTS
 
 namespace TestSuite {
 
