@@ -19,6 +19,14 @@ namespace MathTools {
 		return results;
 	}
 
+	bool is_same_double(const double A, const double B, const double tol) {
+		// Given two doubles, this function returns whether they are within tol of each other.
+		//
+		// The input tol is optional, and has a default value of 1e-6.
+
+		return abs(A - B) < tol;
+	}
+
 	void print_scalar_list(const std::vector<double>& scalar_list,
 		// Prints a list of scalars into a ".csv" file
 
