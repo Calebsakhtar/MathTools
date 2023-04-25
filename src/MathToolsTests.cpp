@@ -198,32 +198,65 @@ namespace TestSuite {
     }
 
     bool legendre_poly_test() {
-        std::vector<double> x = MathTools::linspace(-2, 2, 201);
-        std::vector<double> P0, P1, P2, P3, P4, P5;
-
+        const std::vector<double> x = MathTools::linspace(-2, 2, 201);
+        bool result = true;
+        
+        // Initialize the polynomials of orders 0 - 5
         MathTools::LegendrePoly Poly0(0), Poly1(1), Poly2(2), Poly3(3),
             Poly4(4), Poly5(5);
+        const std::vector<MathTools::LegendrePoly> poly_list = { Poly0, Poly1, Poly2,
+            Poly3, Poly4, Poly5 };
 
+        // Initialize the containers to store the evaluation of the polynomials
+        std::vector<double> P0, P1, P2, P3, P4, P5;
+        std::vector<std::vector<double>> evaluations_list = { P0, P1, P2, P3,
+            P4, P5 };
+
+        // Initialize the theoretical coefficients
+        std::vector<double> P0_coeffs = { 1. };
+        std::vector<double> P1_coeffs = { 1. };
+        std::vector<double> P2_coeffs = { 1.5, -0.5 };
+        std::vector<double> P3_coeffs = { 2.5, -1.5 };
+        std::vector<double> P4_coeffs = { 35./8., -30./8., 3./8. };
+        std::vector<double> P5_coeffs = { 63./8., -70./8., 15./8. };
+        std::vector<std::vector<double>> coeffs = { P0_coeffs, P1_coeffs, P2_coeffs,
+            P3_coeffs, P4_coeffs, P5_coeffs };
+
+        // Initialize the filename to print the polynomials with
+        const std::vector<std::string> filenames = { "Poly00", "Poly01", "Poly02",
+            "Poly03", "Poly04", "Poly05" };
+
+        // Evaluate each polynomial at each x and store the values in the respective
+        // container
         for (size_t i = 0; i < x.size(); i++) {
-            P0.push_back(Poly0.evaluate(x[i]));
-            P1.push_back(Poly1.evaluate(x[i]));
-            P2.push_back(Poly2.evaluate(x[i]));
-            P3.push_back(Poly3.evaluate(x[i]));
-            P4.push_back(Poly4.evaluate(x[i]));
-            P5.push_back(Poly5.evaluate(x[i]));
+            for (size_t j = 0; j < poly_list.size(); j++) {
+                evaluations_list[j].push_back(poly_list[j].evaluate(x[i]));
+            }
         }
 
+        // Print the evaluations of each polynomial
         MathTools::print_scalar_list(x, "xPolynomials");
-        MathTools::print_scalar_list(P0, "Poly00");
-        MathTools::print_scalar_list(P1, "Poly01");
-        MathTools::print_scalar_list(P2, "Poly02");
-        MathTools::print_scalar_list(P3, "Poly03");
-        MathTools::print_scalar_list(P4, "Poly04");
-        MathTools::print_scalar_list(P5, "Poly05");
+        for (size_t j = 0; j < poly_list.size(); j++) {
+            MathTools::print_scalar_list(evaluations_list[j],filenames[j]);
+        }
+
+        // Check that the coefficients are correct
+        for (size_t j = 0; j < poly_list.size(); j++) {
+            result &= MathTools::is_same_double_list(coeffs[j], poly_list[j].get_coeffs());
+        }
+
+        std::cout << std::endl;
+
+        if (result) {
+            std::cout << "legendre_poly_test(): PASSED" << std::endl;
+        }
+        else {
+            std::cout << "legendre_poly_test(): FAILED" << std::endl;
+        }
 
         std::cout << "Graphical test required for 'legendre_poly_test()'" << std::endl;
 
-        return true;
+        return result;
     }
 
     bool hermite_poly_test() {

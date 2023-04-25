@@ -31,7 +31,6 @@ namespace MathTools {
 		std::vector<double> get_coeffs() const {
 			return m_coeffs;
 		}
-		
 	};
 
 	// *********** LEGENDRE POLYNOMIALS *********** //
