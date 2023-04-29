@@ -230,6 +230,53 @@ namespace MathTools {
 		// See the following link for more details: https://stackoverflow.com/a/10359049
 		double sample(std::default_random_engine& generator) const;
 	};
+
+	// *********** BETA (WIENER-ASKEY) DISTRIBUTION *********** //
+	class WABetaCDistribution : public Distribution {
+		double m_alpha = 0;
+		double m_beta = 0;
+		double m_alpha_new = 0;
+		double m_beta_new = 0;
+
+	public:
+		WABetaCDistribution() {};
+
+		// Constructor that uses the following equations to set the mean and
+		// standard deviation
+		//
+		// mean = alpha / (alpha + beta)
+		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+		WABetaCDistribution(const double alpha_new, const double beta_new) {
+			m_alpha_new = alpha_new;
+			m_beta_new = beta_new;
+			m_alpha = m_beta_new + 1;
+			m_beta = m_alpha_new + 1;
+
+			m_mean = m_alpha / (m_alpha + m_beta);
+			m_stdev = sqrt(m_alpha * m_beta / (pow(m_alpha + m_beta, 2) * (m_alpha + m_beta + 1)));
+		};
+
+		// Initialize the parameters of the Beta Distribution using the mean
+		// and standard deviation. It inverts the below equations:
+		//
+		// mean = alpha / (alpha + beta)
+		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+		void set_params_mean_stdev(const double mean, const double stdev);
+
+		// Evaluates the PDF of the Beta Distribution at the point x.
+		//
+		// See the following link for more details: 
+		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+
+		// Takes a random sample of the Beta Distribution using a random number generator.
+		//
+		// See the following link for more details: https://stackoverflow.com/a/10359049
+		double sample(std::default_random_engine& generator) const;
+	};
 }
 
 #endif

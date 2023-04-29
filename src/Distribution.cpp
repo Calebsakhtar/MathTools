@@ -191,4 +191,64 @@ namespace MathTools {
 
 		return X / (X + Y);
 	}
+
+	// *********** BETA (WIENER-ASKEY) DISTRIBUTION FUNCTIONS *********** //
+	void WABetaCDistribution::set_params_mean_stdev(const double mean_new, const double stdev_new) {
+		// Initialize the parameters of the Beta Distribution using the mean
+		// and standard deviation. It inverts the below equations:
+		//
+		// mean = alpha / (alpha + beta)
+		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+		//
+		// This distribution has been shifted to have a mean of zero and a domain of [-1, 1].
+		// In this alpha_new and beta_new are related to beta and alpha respectively.
+		// See for more details: https://doi.org/10.1137/S106482750138782
+
+		m_mean = mean_new;
+		m_stdev = stdev_new;
+
+		double mean_old = m_mean / 2. + 0.5;
+		double stdev_old = m_stdev / 2.;
+
+		m_alpha = (1 - mean_old) * pow(mean_old / stdev_old, 2) - mean_old;
+		m_beta = m_alpha / mean_old * (1 - mean_old);
+		
+		m_alpha_new = m_beta - 1;
+		m_beta_new = m_alpha - 1;
+	}
+
+	double WABetaCDistribution::evaluate_PDF(const double x) const {
+		// Evaluates the PDF of the Beta Distribution at the point x.
+		//
+		// This distribution has been shifted to have a mean of zero and a domain of [-1, 1].
+		// In this alpha_new and beta_new are related to beta and alpha respectively.
+		// See for more details: https://doi.org/10.1137/S106482750138782
+
+		if (x < -1 || x > 1) { return 0; }
+
+		return pow(1 - x, m_alpha_new) * pow(1 + x, m_beta_new) * tgamma(m_alpha_new + m_beta_new + 2)
+			/ (tgamma(m_alpha_new + 1) * tgamma(m_beta_new + 1) * pow(2, m_alpha_new + m_beta_new + 1));
+	}
+
+	double WABetaCDistribution::sample(std::default_random_engine& generator) const {
+		// Takes a random sample of the Beta Distribution using a random number generator.
+		//
+		// See the following link for more details: https://stackoverflow.com/a/10359049
+		//
+		// This distribution has been shifted to have a mean of zero and a domain of [-1, 1].
+		// In this alpha_new and beta_new are related to beta and alpha respectively.
+		// See for more details: https://doi.org/10.1137/S106482750138782
+
+		std::gamma_distribution<double> gammaX(m_alpha, 1);
+		std::gamma_distribution<double> gammaY(m_beta, 1);
+
+		const double X = gammaX(generator);
+		const double Y = gammaY(generator);
+
+		const double Z = X / (X + Y);
+
+		return 2 * (Z - 0.5);
+	}
 }
