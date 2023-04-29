@@ -93,6 +93,7 @@ namespace MathTools {
 
 	// *********** GAMMA DISTRIBUTION *********** //
 	class GammaCDistribution : public Distribution {
+	protected:
 		double m_alpha_shape; // Shape parameter
 		double m_beta_scale; // Scale parameter
 
@@ -122,6 +123,59 @@ namespace MathTools {
 		//
 		// See the following link for more details: https://math.stackexchange.com/questions/1810257/gamma-functions-mean-and-standard-deviation-through-shape-and-rate#:~:text=A%20gamma%20distribution%20has%20a,%5D%3D%E2%88%9Aa%2Fb.
 		void set_params_mean_stdev(const double mean, const double stdev);
+
+		// Evaluates the PDF of the Gamma Distribution at the point x.
+		//
+		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
+		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+
+		// Takes a random sample of the Gamma Distribution using a random number generator.
+		//
+		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
+		double sample(std::default_random_engine& generator) const;
+	};
+
+	// *********** GAMMA (WIENER-ASKEY) DISTRIBUTION *********** //
+	class WAGammaCDistribution : public Distribution {
+		double m_alpha; // New Shape parameter
+		double m_alpha_shape; // Shape parameter
+		double m_beta_scale = 1; // Scale parameter forced to be 1
+
+	public:
+		WAGammaCDistribution() {};
+
+		// Constructor that uses the following equations to set the mean and
+		// standard deviation
+		//
+		// mean = alpha + 1
+		// stdev = sqrt(alpha + 1)
+		//
+		// See the following link for more details: https://doi.org/10.1137/S1064827501387826
+		WAGammaCDistribution(const double alpha) {
+			m_alpha = alpha;
+			m_alpha_shape = alpha + 1;
+
+			m_mean = m_alpha_shape;
+			m_stdev = sqrt(m_alpha_shape);
+		};
+
+		// Initialize the parameters of the Gamma Distribution using the
+		// standard deviation.
+		//
+		// mean  = (stdev)^2
+		// alpha = mean - 1
+		//
+		// See the following link for more details: https://doi.org/10.1137/S1064827501387826
+		void set_params_stdev( const double stdev);
+
+		// Initialize the parameters of the Gamma Distribution using the
+		// standard deviation.
+		//
+		// stdev = (mean)^0.5
+		// alpha = mean - 1
+		//
+		// See the following link for more details: https://doi.org/10.1137/S1064827501387826
+		void set_params_mean(const double mean);
 
 		// Evaluates the PDF of the Gamma Distribution at the point x.
 		//

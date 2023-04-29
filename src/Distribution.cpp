@@ -100,6 +100,59 @@ namespace MathTools {
 		return gamma(generator);
 	}
 
+	// *********** GAMMA DISTRIBUTION (WIENER-ASKEY) FUNCTIONS *********** //
+	void WAGammaCDistribution::set_params_stdev(const double stdev) {
+		// Initialize the parameters of the Gamma Distribution using the
+		// standard deviation.
+		//
+		// mean =  (stdev)^2
+		// alpha = mean - 1
+		//
+		// See the following link for more details: https://doi.org/10.1137/S1064827501387826
+
+		m_mean = stdev * stdev;
+		m_stdev = stdev;
+
+		m_alpha = m_mean - 1;
+		m_alpha_shape = m_alpha + 1;
+	}
+
+	void WAGammaCDistribution::set_params_mean(const double mean) {
+		// Initialize the parameters of the Gamma Distribution using the
+		// standard deviation.
+		//
+		// stdev = (mean)^0.5
+		// alpha = mean - 1
+		//
+		// See the following link for more details: https://doi.org/10.1137/S1064827501387826
+
+		m_mean = mean;
+		m_stdev = sqrt(mean);
+
+		m_alpha = m_mean - 1;
+		m_alpha_shape = m_alpha + 1;
+	}
+
+	double WAGammaCDistribution::evaluate_PDF(const double x) const {
+		// Evaluates the PDF of the Gamma Distribution at the point x.
+		//
+		// See the following link for more details: https://doi.org/10.1137/S1064827501387826
+
+		if (x <= 0) { return 0; }
+
+		return exp(-x) * pow(x, m_alpha) / tgamma(m_alpha + 1);
+	}
+
+	double WAGammaCDistribution::sample(std::default_random_engine& generator) const {
+		// Takes a random sample of the Gamma Distribution using a random number generator.
+		//
+		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
+
+		std::gamma_distribution<double> gamma(m_alpha_shape, m_beta_scale);
+
+		return gamma(generator);
+	}
+
 	// *********** BETA DISTRIBUTION FUNCTIONS *********** //
 	void BetaCDistribution::set_params_mean_stdev(const double mean, const double stdev){
 		// Initialize the parameters of the Beta Distribution using the mean
