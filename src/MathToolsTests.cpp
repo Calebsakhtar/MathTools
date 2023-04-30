@@ -250,6 +250,9 @@ namespace TestSuite {
     }
 
     bool wa_beta_distribution_test_parametric() {
+        // This test tries to emulate the 0.5, 0.5 case in the following link:
+        // https://en.wikipedia.org/wiki/Beta_distribution#/media/File:Beta_distribution_pdf.svg
+
         std::vector<double> x = MathTools::linspace(-1, 1, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
@@ -272,6 +275,9 @@ namespace TestSuite {
     }
 
     bool wa_beta_distribution_test_mean() {
+        // This test tries to emulate the 0.5, 0.5 case in the following link:
+        // https://en.wikipedia.org/wiki/Beta_distribution#/media/File:Beta_distribution_pdf.svg
+
         std::vector<double> x = MathTools::linspace(-1, 1, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
