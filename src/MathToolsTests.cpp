@@ -151,6 +151,52 @@ namespace TestSuite {
         return true;
     }
 
+    bool wa_gamma_distribution_test_parametric() {
+        std::vector<double> x = MathTools::linspace(0, 6, 201);
+        std::vector<double> PDF_values;
+        std::vector<double> samples;
+
+        std::default_random_engine generator;
+        MathTools::WAGammaCDistribution gamma(2);
+
+        for (size_t i = 0; i < x.size(); i++) {
+            PDF_values.push_back(gamma.evaluate_PDF(x[i]));
+            samples.push_back(gamma.sample(generator));
+        }
+
+        MathTools::print_scalar_list(x, "xDistribution");
+        MathTools::print_scalar_list(PDF_values, "PDF");
+        MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'wa_gamma_distribution_test_parametric()'" << std::endl;
+
+        return true;
+    }
+
+    bool wa_gamma_distribution_test_mean() {
+        std::vector<double> x = MathTools::linspace(0, 6, 201);
+        std::vector<double> PDF_values;
+        std::vector<double> samples;
+
+        std::default_random_engine generator;
+        MathTools::WAGammaCDistribution gamma;
+
+        gamma.set_params_mean(1);
+
+        for (size_t i = 0; i < x.size(); i++) {
+            PDF_values.push_back(gamma.evaluate_PDF(x[i]));
+            samples.push_back(gamma.sample(generator));
+        }
+
+        MathTools::print_scalar_list(x, "xDistribution");
+        MathTools::print_scalar_list(PDF_values, "PDF");
+        MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'wa_gamma_distribution_test_mean()'" << std::endl;
+
+        return true;
+    }
+
     bool beta_distribution_test_parametric() {
         std::vector<double> x = MathTools::linspace(0, 1, 201);
         std::vector<double> PDF_values;
@@ -193,6 +239,52 @@ namespace TestSuite {
         MathTools::print_scalar_list(samples, "Samples");
 
         std::cout << "Graphical test required for 'beta_distribution_test_mean()'" << std::endl;
+
+        return true;
+    }
+
+    bool wa_beta_distribution_test_parametric() {
+        std::vector<double> x = MathTools::linspace(-1, 1, 201);
+        std::vector<double> PDF_values;
+        std::vector<double> samples;
+
+        std::default_random_engine generator;
+        MathTools::WABetaCDistribution beta(-0.5, -0.5);
+
+        for (size_t i = 0; i < x.size(); i++) {
+            PDF_values.push_back(beta.evaluate_PDF(x[i]));
+            samples.push_back(beta.sample(generator));
+        }
+
+        MathTools::print_scalar_list(x, "xDistribution");
+        MathTools::print_scalar_list(PDF_values, "PDF");
+        MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'wa_beta_distribution_test_parametric()'" << std::endl;
+
+        return true;
+    }
+
+    bool wa_beta_distribution_test_mean() {
+        std::vector<double> x = MathTools::linspace(-1, 1, 201);
+        std::vector<double> PDF_values;
+        std::vector<double> samples;
+
+        std::default_random_engine generator;
+        MathTools::WABetaCDistribution beta;
+
+        beta.set_params_mean_stdev(0, 0.70710678118654757);
+
+        for (size_t i = 0; i < x.size(); i++) {
+            PDF_values.push_back(beta.evaluate_PDF(x[i]));
+            samples.push_back(beta.sample(generator));
+        }
+
+        MathTools::print_scalar_list(x, "xDistribution");
+        MathTools::print_scalar_list(PDF_values, "PDF");
+        MathTools::print_scalar_list(samples, "Samples");
+
+        std::cout << "Graphical test required for 'wa_beta_distribution_test_mean()'" << std::endl;
 
         return true;
     }

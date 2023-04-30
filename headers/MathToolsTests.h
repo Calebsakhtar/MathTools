@@ -15,9 +15,17 @@ namespace TestSuite {
 
 	bool gamma_distribution_test_mean();
 
+	bool wa_gamma_distribution_test_parametric();
+
+	bool wa_gamma_distribution_test_mean();
+
 	bool beta_distribution_test_parametric();
 
 	bool beta_distribution_test_mean();
+
+	bool wa_beta_distribution_test_parametric();
+
+	bool wa_beta_distribution_test_mean();
 
 	bool legendre_poly_test();
 
