@@ -152,12 +152,15 @@ namespace TestSuite {
     }
 
     bool wa_gamma_distribution_test_parametric() {
+        // Test needs to match the gamma = 2 case in the following link:
+    // https://www.itl.nist.gov/div898/handbook/eda/section3/eda366b.htm
+
         std::vector<double> x = MathTools::linspace(0, 6, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
 
         std::default_random_engine generator;
-        MathTools::WAGammaCDistribution gamma(2);
+        MathTools::WAGammaCDistribution gamma(1);
 
         for (size_t i = 0; i < x.size(); i++) {
             PDF_values.push_back(gamma.evaluate_PDF(x[i]));
@@ -174,6 +177,9 @@ namespace TestSuite {
     }
 
     bool wa_gamma_distribution_test_mean() {
+        // Test needs to match the gamma = 2 case in the following link:
+        // https://www.itl.nist.gov/div898/handbook/eda/section3/eda366b.htm
+
         std::vector<double> x = MathTools::linspace(0, 6, 201);
         std::vector<double> PDF_values;
         std::vector<double> samples;
@@ -181,7 +187,7 @@ namespace TestSuite {
         std::default_random_engine generator;
         MathTools::WAGammaCDistribution gamma;
 
-        gamma.set_params_mean(1);
+        gamma.set_params_mean(2);
 
         for (size_t i = 0; i < x.size(); i++) {
             PDF_values.push_back(gamma.evaluate_PDF(x[i]));
