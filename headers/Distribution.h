@@ -248,15 +248,7 @@ namespace MathTools {
 		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
 		//
 		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
-		WABetaCDistribution(const double alpha_new, const double beta_new) {
-			m_alpha_new = alpha_new;
-			m_beta_new = beta_new;
-			m_alpha = m_beta_new + 1;
-			m_beta = m_alpha_new + 1;
-
-			m_mean = m_alpha / (m_alpha + m_beta);
-			m_stdev = sqrt(m_alpha * m_beta / (pow(m_alpha + m_beta, 2) * (m_alpha + m_beta + 1)));
-		};
+		WABetaCDistribution(const double alpha_new, const double beta_new);;
 
 		// Initialize the parameters of the Beta Distribution using the mean
 		// and standard deviation. It inverts the below equations:

@@ -1,4 +1,5 @@
 #include "../headers/Distribution.h"
+#include "../headers/MathTools.h"
 
 namespace MathTools {
 
@@ -193,6 +194,26 @@ namespace MathTools {
 	}
 
 	// *********** BETA (WIENER-ASKEY) DISTRIBUTION FUNCTIONS *********** //
+			// Constructor that uses the following equations to set the mean and
+		// standard deviation
+		//
+		// mean = alpha / (alpha + beta)
+		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+	WABetaCDistribution::WABetaCDistribution(const double alpha_new, const double beta_new) {
+		m_alpha_new = alpha_new;
+		m_beta_new = beta_new;
+		m_alpha = m_beta_new + 1;
+		m_beta = m_alpha_new + 1;
+
+		m_mean = m_alpha / (m_alpha + m_beta);
+		m_stdev = sqrt(m_alpha * m_beta / (pow(m_alpha + m_beta, 2) * (m_alpha + m_beta + 1)));
+
+		m_mean = 2 * (m_mean - 0.5);
+		m_stdev = 2 * m_stdev;
+	};
+
 	void WABetaCDistribution::set_params_mean_stdev(const double mean_new, const double stdev_new) {
 		// Initialize the parameters of the Beta Distribution using the mean
 		// and standard deviation. It inverts the below equations:
@@ -214,7 +235,10 @@ namespace MathTools {
 
 		m_alpha = (1 - mean_old) * pow(mean_old / stdev_old, 2) - mean_old;
 		m_beta = m_alpha / mean_old * (1 - mean_old);
-		
+
+		if (m_alpha < 1e-3) { m_alpha = 1e-3; }
+		if (m_beta < 1e-3) { m_beta = 1e-3; }
+
 		m_alpha_new = m_beta - 1;
 		m_beta_new = m_alpha - 1;
 	}
