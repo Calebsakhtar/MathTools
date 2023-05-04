@@ -28,7 +28,9 @@ namespace MathTools {
 
 		virtual double evaluate_PDF(const double x) const = 0;
 
-		virtual  double sample(std::default_random_engine& generator) const = 0;
+		//virtual double evaluate_inverse_CDF(const double u) const = 0;
+
+		virtual double sample(std::default_random_engine& generator) const = 0;
 	};
 
 	// *********** NORMAL DISTRIBUTION *********** //
@@ -40,7 +42,7 @@ namespace MathTools {
 		// Evaluates the PDF of the Normal Distribution at the point x.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
-		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; 
 
 		// Takes a random sample of the normal distribution using a random number generator
 		//
@@ -83,7 +85,18 @@ namespace MathTools {
 		// Evaluates the PDF of the Uniform Distribution at the point x.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/uniform_real_distribution/
-		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; 
+
+		// Computes the inverse CDF of the Uniform distribution at the point u.
+		//
+		// x = lower_lim + (upper_lim - lower_lim) * u
+		//
+		// Where the input "u" takes the values [0, 1]. Otherwise, this function returns a NaN.
+		// 
+		// This expression for the inverse CDF was found in Table 3.1 (Page 151) of the following book:
+		// G. Fishman,Monte Carlo: Concepts, Algorithms, and Applications, Springer-Verlag, NewYork, 1996
+		// Available at: https://link.springer.com/book/10.1007/978-1-4757-2553-7
+		double evaluate_inverse_CDF(const double u) const;
 
 		// Takes a random sample of the Uniform Distribution using a random number generator.
 		//
@@ -127,7 +140,7 @@ namespace MathTools {
 		// Evaluates the PDF of the Gamma Distribution at the point x.
 		//
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
-		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; 
 
 		// Takes a random sample of the Gamma Distribution using a random number generator.
 		//
@@ -180,7 +193,9 @@ namespace MathTools {
 		// Evaluates the PDF of the Gamma Distribution at the point x.
 		//
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
-		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; 
+
+		double evaluate_inverse_CDF(const double u) const;
 
 		// Takes a random sample of the Gamma Distribution using a random number generator.
 		//
@@ -223,7 +238,7 @@ namespace MathTools {
 		// Evaluates the PDF of the Beta Distribution at the point x.
 		//
 		// See the following link for more details: 
-		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; 
 
 		// Takes a random sample of the Beta Distribution using a random number generator.
 		//
@@ -262,7 +277,7 @@ namespace MathTools {
 		// Evaluates the PDF of the Beta Distribution at the point x.
 		//
 		// See the following link for more details: 
-		double evaluate_PDF(const double x) const; // Virtual overrides parent class method
+		double evaluate_PDF(const double x) const; 
 
 		// Takes a random sample of the Beta Distribution using a random number generator.
 		//
