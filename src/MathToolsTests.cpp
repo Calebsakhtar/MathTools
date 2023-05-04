@@ -38,21 +38,41 @@ namespace TestSuite {
     }
 
     bool normal_distribution_test() {
-        std::vector<double> x = MathTools::linspace(2, 8, 201);
+        std::vector<double> x = MathTools::linspace(-30, 30, 100001);
         std::vector<double> PDF_values;
         std::vector<double> samples;
 
         std::default_random_engine generator;
-        MathTools::NormalCDistribution norm(5, 1);
+
+        // Distribution shared pointers
+        std::shared_ptr<MathTools::NormalCDistribution>
+            norm_ptr(new MathTools::NormalCDistribution(7, 2)); // Uncertain Parameter Distribution
+        auto norm(norm_ptr);
+
+        // Orthogonal Polynomials
+        std::shared_ptr<MathTools::HermitePoly> poly_ptr(new MathTools::HermitePoly(0));
+        auto poly_ptr_den(poly_ptr);
+
+        // Functions to be evaluated in the numerator of the Galerkin Projection 
+        std::vector<std::shared_ptr<MathTools::NormalCDistribution>>
+            distributions;
+        distributions.push_back(std::move(norm_ptr));
+
+        std::vector<std::shared_ptr<MathTools::HermitePoly>> polys;
+        polys.push_back(std::move(poly_ptr));
 
         for (size_t i = 0; i < x.size(); i++) {
-            PDF_values.push_back(norm.evaluate_PDF(x[i]));
-            samples.push_back(norm.sample(generator));
+            PDF_values.push_back(norm->evaluate_PDF(x[i]));
+            samples.push_back(norm->sample(generator));
         }
 
         MathTools::print_scalar_list(x, "xDistribution");
         MathTools::print_scalar_list(PDF_values, "PDF");
         MathTools::print_scalar_list(samples, "Samples");
+
+
+
+        double result = MathTools::integrate_product_dist_polys(x, distributions, polys);
 
         std::cout << "Graphical test required for 'normal_distribution_test()'" << std::endl;
 
@@ -647,10 +667,10 @@ namespace TestSuite {
 
     bool galerkin_projection_test() {
         // Values of the spectral variable eta
-        const std::vector<double> ip_list = MathTools::linspace(-50, 50, 10001);
+        const std::vector<double> ip_list = MathTools::linspace(-10, 30, 10001);
 
         // Other variables
-        const size_t max_order = 2; // Maximum order of the orthogonal polynomials used
+        const size_t max_order = 3; // Maximum order of the orthogonal polynomials used
         double num = 0; // Numerator value
         double denom = 0; // Denominator value
 
@@ -691,7 +711,13 @@ namespace TestSuite {
         // Loop to find the coefficients of Lambda
         for (size_t i = 0; i < max_order; i++) {
             // To save memory, only one polynomial is used, and is order is updated
-            current_poly_ptr->set_order(i);
+            for (size_t j = 0; j < polys_num.size(); j++) {
+                polys_num[j]->set_order(i);
+            }
+
+            for (size_t j = 0; j < polys_den.size(); j++) {
+                polys_den[j]->set_order(i);
+            }
 
             // Evaluate the numerator and denominator of the Galerkin projection for Lambda
             num = MathTools::integrate_product_dist_polys(ip_list, distributions_num, polys_num);
