@@ -20,9 +20,10 @@ namespace MathTools {
 		double m_lower_lim; // Lower limit for the distribution. Below this lim CDF = 0
 		double m_upper_lim; // Upper limit for the distribution. Above this lim CDF = 1
 
-		double m_iCDF_tol = 1e-6;
-		size_t m_iCDF_max_stepnum = 1e4;
-		size_t m_CDF_stepnum = 1e3;
+		double m_iCDF_tol = 1e-6; // Tolerance for convergence of the inverse CDF
+		size_t m_iCDF_max_stepnum = 1e4; // Maximum step number for the 
+										 // convergence of the inverse CDF
+		size_t m_CDF_stepnum = 1e3; // Step number to compute the CDF
 
 
 	public:
