@@ -13,7 +13,7 @@ namespace MathTools {
 		// This is done by numerical integration of the PDF. The step size of the
 		// integration is controlled by the parameter "m_CDF_stepnum".
 
-		const std::vector<double> x_list = linspace(m_mean - 10 * m_stdev, x, m_CDF_stepnum);
+		const std::vector<double> x_list = linspace(m_lower_lim, x, m_CDF_stepnum);
 
 		std::vector<double> result;
 		double h;
@@ -36,8 +36,8 @@ namespace MathTools {
 		// steps "m_iCDF_max_stepnum" is used, and a tolerance for the error of the answer
 		// "m_iCDF_tol" is also used.
 
-		std::vector<double> x = { 0, 1 };
-		integrate_func_SISO(x, evaluate_CDF());
+		//std::vector<double> x = { 0, 1 };
+		//integrate_func_SISO(x, evaluate_CDF());
 		return 0;
 	}
 

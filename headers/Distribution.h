@@ -17,9 +17,13 @@ namespace MathTools {
 		bool is_discrete = false;
 		double m_mean;
 		double m_stdev;
+		double m_lower_lim; // Lower limit for the distribution. Below this lim CDF = 0
+		double m_upper_lim; // Upper limit for the distribution. Above this lim CDF = 1
+
 		double m_iCDF_tol = 1e-6;
 		size_t m_iCDF_max_stepnum = 1e4;
 		size_t m_CDF_stepnum = 1e4;
+
 
 	public:
 		Distribution() {};
@@ -27,6 +31,8 @@ namespace MathTools {
 		Distribution(const double mean, const double stdev) {
 			m_mean = mean;
 			m_stdev = stdev;
+			m_lower_lim = mean - 10 * stdev;
+			m_upper_lim = mean + 10 * stdev;
 		}
 
 		size_t get_CDF_stepnum() {
@@ -101,9 +107,6 @@ namespace MathTools {
 
 	// *********** UNIFORM DISTRIBUTION *********** //
 	class UniformCDistribution : public Distribution {
-		double m_lower_lim; // Lower limit for the distribution
-		double m_upper_lim; // Upper limit for the distribution
-
 	public:
 		UniformCDistribution() {};
 
