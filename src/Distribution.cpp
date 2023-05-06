@@ -6,7 +6,6 @@
 namespace MathTools {
 
 	// *********** DISTRIBUTION FUNCTIONS *********** //
-
 	double Distribution::evaluate_CDF(const double x) const {
 		// Evaluates the CDF of the Distribution at the point x.
 		//
@@ -35,6 +34,8 @@ namespace MathTools {
 		// This is done by the use of the Newton-Raphson method. A maximum number of
 		// steps "m_iCDF_max_stepnum" is used, and a tolerance for the error of the answer
 		// "m_iCDF_tol" is also used.
+		//
+		// Details about the Newton-Raphson method: https://en.wikipedia.org/wiki/Newton%27s_method
 
 		// Return NaN if u is not within [0, 1].
 		if (u < 0 || u > 1) { return NAN; }

@@ -77,6 +77,8 @@ namespace MathTools {
 		// This is done by the use of the Newton-Raphson method. A maximum number of
 		// steps "m_iCDF_max_stepnum" is used, and a tolerance for the error of the answer
 		// "m_iCDF_tol" is also used.
+		//
+		// Details about the Newton-Raphson method: https://en.wikipedia.org/wiki/Newton%27s_method
 		virtual double evaluate_iCDF(const double u) const;
 	};
 
