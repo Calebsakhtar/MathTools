@@ -17,6 +17,9 @@ namespace MathTools {
 		bool is_discrete = false;
 		double m_mean;
 		double m_stdev;
+		double m_iCDF_tol = 1e-6;
+		size_t m_iCDF_max_stepnum = 1e4;
+		size_t m_CDF_stepnum = 1e4;
 
 	public:
 		Distribution() {};
@@ -26,24 +29,48 @@ namespace MathTools {
 			m_stdev = stdev;
 		}
 
+		size_t get_CDF_stepnum() {
+			return m_CDF_stepnum;
+		}
+
+		void set_CDF_stepnum(const size_t stepnum) {
+			m_CDF_stepnum = stepnum;
+		}
+
+		size_t get_iCDF_max_stepnum() {
+			return m_iCDF_max_stepnum;
+		}
+
+		void set_iCDF_max_stepnum(const size_t max_stepnum) {
+			m_iCDF_max_stepnum = max_stepnum;
+		}
+
+		double get_iCDF_tol() {
+			return m_iCDF_tol;
+		}
+
+		void set_iCDF_max_stepnum(const double tol) {
+			m_iCDF_tol = tol;
+		}
+
 		virtual double evaluate_PDF(const double x) const = 0;
 
-		//virtual double evaluate_inverse_CDF(const double u) const = 0;
+		//virtual double evaluate_iCDF(const double u) const = 0;
 
 		virtual double sample(std::default_random_engine& generator) const = 0;
 
 		// Evaluates the CDF of the Distribution at the point x.
 		//
-		// This is done by numerical integration of the PDF.
-		virtual double evaluate_CDF(const double x, const double steps = 1e4) const;
+		// This is done by numerical integration of the PDF. The step size of the
+		// integration is controlled by the parameter "m_CDF_stepnum".
+		virtual double evaluate_CDF(const double x) const;
 
 		// Evaluates the inverse CDF of the Distribution at the point x.
 		//
 		// This is done by the use of the Newton-Raphson method. A maximum number of
-		// steps "max_stepnum" is used, and a tolerance for the error of the answer
-		// "tol" is also used.
-		virtual double evaluate_inverse_CDF(const double u, const double max_stepnum = 1e4,
-			const double tol = 1e-6) const;
+		// steps "m_iCDF_max_stepnum" is used, and a tolerance for the error of the answer
+		// "m_iCDF_tol" is also used.
+		virtual double evaluate_iCDF(const double u) const;
 	};
 
 	// *********** NORMAL DISTRIBUTION *********** //
@@ -64,8 +91,7 @@ namespace MathTools {
 		// This expression for the inverse CDF was found in Table 3.1 (Page 151) of the following book:
 		// G. Fishman,Monte Carlo: Concepts, Algorithms, and Applications, Springer-Verlag, NewYork, 1996
 		// Available at: https://link.springer.com/book/10.1007/978-1-4757-2553-7
-		double evaluate_inverse_CDF(const double u, const double max_stepnum = 1e4,
-			const double tol = 1e-6) const override;
+		double evaluate_iCDF(const double u) const override;
 
 		// Takes a random sample of the normal distribution using a random number generator
 		//
@@ -114,7 +140,7 @@ namespace MathTools {
 		// This is done by analytical integration of the PDF:
 		//
 		// CDF = (x - lower_lim) / (upper_lim - lower_lim)
-		virtual double evaluate_CDF(const double x, const double steps = 1e4) const override;
+		virtual double evaluate_CDF(const double x) const override;
 
 		// Computes the inverse CDF of the Uniform distribution at the point u.
 		//
@@ -125,8 +151,7 @@ namespace MathTools {
 		// This expression for the inverse CDF was found in Table 3.1 (Page 151) of the following book:
 		// G. Fishman,Monte Carlo: Concepts, Algorithms, and Applications, Springer-Verlag, NewYork, 1996
 		// Available at: https://link.springer.com/book/10.1007/978-1-4757-2553-7
-		double evaluate_inverse_CDF(const double u, const double max_stepnum = 1e4,
-			const double tol = 1e-6) const override;
+		double evaluate_iCDF(const double u) const override;
 
 		// Takes a random sample of the Uniform Distribution using a random number generator.
 		//

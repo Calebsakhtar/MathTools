@@ -7,12 +7,13 @@ namespace MathTools {
 
 	// *********** DISTRIBUTION FUNCTIONS *********** //
 
-	double Distribution::evaluate_CDF(const double x, const double steps) const {
+	double Distribution::evaluate_CDF(const double x) const {
 		// Evaluates the CDF of the Distribution at the point x.
 		//
-		// This is done by numerical integration of the PDF.
+		// This is done by numerical integration of the PDF. The step size of the
+		// integration is controlled by the parameter "m_CDF_stepnum".
 
-		const std::vector<double> x_list = linspace(m_mean - 10 * m_stdev, x, steps);
+		const std::vector<double> x_list = linspace(m_mean - 10 * m_stdev, x, m_CDF_stepnum);
 
 		std::vector<double> result;
 		double h;
@@ -28,13 +29,15 @@ namespace MathTools {
 		return *result.end();
 	}
 
-	// Evaluates the inverse CDF of the Distribution at the point x.
-	//
-	// This is done by the use of the Newton-Raphson method. A maximum number of
-	// steps "max_stepnum" is used, and a tolerance for the error of the answer
-	// "tol" is also used.
-	double Distribution::evaluate_inverse_CDF(const double u, const double max_stepnum,
-		const double tol) const {
+	double Distribution::evaluate_iCDF(const double u) const {
+		// Evaluates the inverse CDF of the Distribution at the point x.
+		//
+		// This is done by the use of the Newton-Raphson method. A maximum number of
+		// steps "m_iCDF_max_stepnum" is used, and a tolerance for the error of the answer
+		// "m_iCDF_tol" is also used.
+
+		std::vector<double> x = { 0, 1 };
+		integrate_func_SISO(x, evaluate_CDF());
 		return 0;
 	}
 
@@ -47,8 +50,7 @@ namespace MathTools {
 		return exp(-1 * pow(x - m_mean, 2) / (2 * pow(m_stdev, 2))) / (m_stdev * sqrt(2 * M_PI));
 	}
 
-	double NormalCDistribution::evaluate_inverse_CDF(const double u, const double max_stepnum,
-		const double tol) const {
+	double NormalCDistribution::evaluate_iCDF(const double u) const {
 		// Computes the inverse CDF of the Normal distribution at the point u.
 		//
 		// Where the input "u" takes the values [0, 1]. Otherwise, this function returns a NaN.
@@ -122,7 +124,7 @@ namespace MathTools {
 		}
 	}
 
-	double UniformCDistribution::evaluate_CDF(const double x, const double steps) const {
+	double UniformCDistribution::evaluate_CDF(const double x) const {
 		// Evaluates the CDF of the Uniform Distribution at the point x.
 		// This is done by analytical integration of the PDF:
 		//
@@ -134,8 +136,7 @@ namespace MathTools {
 		return (x - m_lower_lim) / (m_upper_lim - m_lower_lim);
 	}
 
-	double UniformCDistribution::evaluate_inverse_CDF(const double u, const double max_stepnum,
-		const double tol) const {
+	double UniformCDistribution::evaluate_iCDF(const double u) const {
 		// Computes the inverse CDF of the Uniform distribution at the point u.
 		//
 		// x = lower_lim + (upper_lim - lower_lim) * u
