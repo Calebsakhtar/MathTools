@@ -22,7 +22,7 @@ namespace MathTools {
 
 		double m_iCDF_tol = 1e-6;
 		size_t m_iCDF_max_stepnum = 1e4;
-		size_t m_CDF_stepnum = 1e4;
+		size_t m_CDF_stepnum = 1e3;
 
 
 	public:

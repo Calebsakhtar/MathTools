@@ -26,7 +26,7 @@ namespace MathTools {
 				(evaluate_PDF(x_list[i]) + evaluate_PDF(x_list[i - 1])));
 		}
 
-		return *result.end();
+		return result.back();
 	}
 
 	double Distribution::evaluate_iCDF(const double u) const {
@@ -36,10 +36,69 @@ namespace MathTools {
 		// steps "m_iCDF_max_stepnum" is used, and a tolerance for the error of the answer
 		// "m_iCDF_tol" is also used.
 
+		// Return NaN if u is not within [0, 1].
+		if (u < 0 || u > 1) { return NAN; }
+
+		// Return the limit values if u is at the limits
 		if (u == 0) { return m_lower_lim; }
 		if (u == 1) { return m_upper_lim; }
 
-		return 0;
+		size_t steps = 0;
+		const double factor = 0.5; // Reduction factor to prevent overshooting
+		double x = (m_mean + m_lower_lim) / 2; // Choose not to start at mean to protect from NaNs
+		double x_prev = 0;
+		double f = evaluate_CDF(x) - u;
+		double f_prev = 1e10;
+		double f_dash = evaluate_PDF(x);
+		double step = 0; // Step size
+
+		// Loop until tolerance satisfied or max. step number reached
+		while (abs(f) > m_iCDF_tol && steps < m_iCDF_max_stepnum) {
+
+			// Protect against NaNs
+			if (f_dash == 0) { f_dash = 1e-3; }
+
+			// Save the details of the previous step
+			x_prev = x;
+			f_prev = f;
+
+			// Evaluate the new x
+			step = f / f_dash;
+			x = x_prev - step;
+
+			// Protect against overshooting the limits of the CDF
+			while (x < m_lower_lim || x > m_upper_lim) {
+				step *= factor;
+				x = x_prev - step;
+
+				// If for whatever reason we are still stuck after not moving,
+				// exit this loop
+				if (is_same_double(x, x_prev)) {
+					break;
+				}
+			}
+
+			// Evaluate the new objective function
+			f = evaluate_CDF(x) - u;
+
+			// Protect against overshooting the predicted improvement in abs(f)
+			while (abs(f_prev) < abs(f)) {
+				step *= factor;
+				x = x_prev - step;
+				f = evaluate_CDF(x) - u;
+
+				// If for whatever reason we are still stuck after not moving,
+				// exit this loop
+				if (is_same_double(x, x_prev)) {
+					break;
+				}
+			}
+
+			f_dash = evaluate_PDF(x);
+			steps++;
+		}
+
+		return x;
 	}
 
 	// *********** NORMAL DISTRIBUTION FUNCTIONS *********** //
