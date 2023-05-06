@@ -111,6 +111,18 @@ namespace MathTools {
 		}
 	}
 
+	double UniformCDistribution::evaluate_CDF(const double x, const double steps) const {
+		// Evaluates the CDF of the Uniform Distribution at the point x.
+		// This is done by analytical integration of the PDF:
+		//
+		// CDF = (x - lower_lim) / (upper_lim - lower_lim)
+
+		if (x <= m_lower_lim) { return 0; }
+		if (x >= m_upper_lim) { return 1; }
+
+		return (x - m_lower_lim) / (m_upper_lim - m_lower_lim);
+	}
+
 	double UniformCDistribution::evaluate_inverse_CDF(const double u) const {
 		// Computes the inverse CDF of the Uniform distribution at the point u.
 		//

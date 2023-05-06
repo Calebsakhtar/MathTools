@@ -32,6 +32,9 @@ namespace MathTools {
 
 		virtual double sample(std::default_random_engine& generator) const = 0;
 
+		// Evaluates the CDF of the Distribution at the point x.
+		//
+		// This is done by numerical integration of the PDF.
 		virtual double evaluate_CDF(const double x, const double steps = 1e4) const;
 	};
 
@@ -97,6 +100,12 @@ namespace MathTools {
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/uniform_real_distribution/
 		double evaluate_PDF(const double x) const override; 
+
+		// Evaluates the CDF of the Uniform Distribution at the point x.
+		// This is done by analytical integration of the PDF:
+		//
+		// CDF = (x - lower_lim) / (upper_lim - lower_lim)
+		virtual double evaluate_CDF(const double x, const double steps = 1e4) const override;
 
 		// Computes the inverse CDF of the Uniform distribution at the point u.
 		//
