@@ -44,7 +44,7 @@ namespace MathTools {
 		// Evaluates the PDF of the Normal Distribution at the point x.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
-		double evaluate_PDF(const double x) const;
+		double evaluate_PDF(const double x) const override;
 
 		// Computes the inverse CDF of the Normal distribution at the point u.
 		//
@@ -58,7 +58,7 @@ namespace MathTools {
 		// Takes a random sample of the normal distribution using a random number generator
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
-		double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const override;
 	};
 
 	// *********** UNIFORM DISTRIBUTION *********** //
@@ -96,7 +96,7 @@ namespace MathTools {
 		// Evaluates the PDF of the Uniform Distribution at the point x.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/uniform_real_distribution/
-		double evaluate_PDF(const double x) const; 
+		double evaluate_PDF(const double x) const override; 
 
 		// Computes the inverse CDF of the Uniform distribution at the point u.
 		//
@@ -112,7 +112,7 @@ namespace MathTools {
 		// Takes a random sample of the Uniform Distribution using a random number generator.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/uniform_real_distribution/
-		double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const override;
 	};
 
 	// *********** GAMMA DISTRIBUTION *********** //
@@ -151,12 +151,12 @@ namespace MathTools {
 		// Evaluates the PDF of the Gamma Distribution at the point x.
 		//
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
-		double evaluate_PDF(const double x) const; 
+		double evaluate_PDF(const double x) const override; 
 
 		// Takes a random sample of the Gamma Distribution using a random number generator.
 		//
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
-		double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const override;
 	};
 
 	// *********** GAMMA (WIENER-ASKEY) DISTRIBUTION *********** //
@@ -204,14 +204,12 @@ namespace MathTools {
 		// Evaluates the PDF of the Gamma Distribution at the point x.
 		//
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
-		double evaluate_PDF(const double x) const; 
-
-		double evaluate_inverse_CDF(const double u) const;
+		double evaluate_PDF(const double x) const override; 
 
 		// Takes a random sample of the Gamma Distribution using a random number generator.
 		//
 		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
-		double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const override;
 	};
 
 	// *********** BETA DISTRIBUTION *********** //
@@ -249,12 +247,12 @@ namespace MathTools {
 		// Evaluates the PDF of the Beta Distribution at the point x.
 		//
 		// See the following link for more details: 
-		double evaluate_PDF(const double x) const; 
+		double evaluate_PDF(const double x) const override; 
 
 		// Takes a random sample of the Beta Distribution using a random number generator.
 		//
 		// See the following link for more details: https://stackoverflow.com/a/10359049
-		double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const override;
 	};
 
 	// *********** BETA (WIENER-ASKEY) DISTRIBUTION *********** //
@@ -288,12 +286,12 @@ namespace MathTools {
 		// Evaluates the PDF of the Beta Distribution at the point x.
 		//
 		// See the following link for more details: 
-		double evaluate_PDF(const double x) const; 
+		double evaluate_PDF(const double x) const override; 
 
 		// Takes a random sample of the Beta Distribution using a random number generator.
 		//
 		// See the following link for more details: https://stackoverflow.com/a/10359049
-		double sample(std::default_random_engine& generator) const;
+		double sample(std::default_random_engine& generator) const override;
 	};
 }
 
