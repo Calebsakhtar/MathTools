@@ -45,6 +45,8 @@ namespace TestSuite {
 
 	bool cdf_icdf_normal_test();
 
+	bool cdf_icdf_uniform_test();
+
 	bool cdf_icdf_gamma_test();
 
 	bool galerkin_projection_test();
