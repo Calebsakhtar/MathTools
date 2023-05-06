@@ -1,3 +1,5 @@
+#include<algorithm>
+
 #include "../headers/Distribution.h"
 #include "../headers/MathTools.h"
 
@@ -10,6 +12,39 @@ namespace MathTools {
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
 
 		return exp(-1 * pow(x - m_mean, 2) / (2 * pow(m_stdev, 2))) / (m_stdev * sqrt(2 * M_PI));
+	}
+
+	double NormalCDistribution::evaluate_inverse_CDF(const double u) const {
+		// Computes the inverse CDF of the Normal distribution at the point u.
+		//
+		// Where the input "u" takes the values [0, 1]. Otherwise, this function returns a NaN.
+		// 
+		// This expression for the inverse CDF was found in Table 3.1 (Page 151) of the following book:
+		// G. Fishman,Monte Carlo: Concepts, Algorithms, and Applications, Springer-Verlag, NewYork, 1996
+		// Available at: https://link.springer.com/book/10.1007/978-1-4757-2553-7
+
+		if (u < 0 || u > 1) {
+			return NAN;
+		}
+
+		const double c0 = 2.515517;
+		const double c1 = 0.802853;
+		const double c2 = 0.010328;
+		const double d1 = 1.432788;
+		const double d2 = 0.189269;
+		const double d3 = 0.001308;
+
+		const double t = sqrt(-log(pow(std::min(u, 1 - u), 2)));
+		
+		double sign = u - 0.5;
+		if (sign != 0) { sign = sign / abs(sign); }
+
+		double result = - ( c0 + c1 * t + c2 * pow(t, 2)) / (1 + d1 * t + d2 * pow(t, 2) + d3 * pow(t,3));
+		result += t;
+		result *= sign * m_stdev;
+		result += m_mean;
+
+		return result;
 	}
 
 	double NormalCDistribution::sample(std::default_random_engine& generator) const {

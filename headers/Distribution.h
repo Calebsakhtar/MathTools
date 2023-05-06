@@ -44,6 +44,15 @@ namespace MathTools {
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
 		double evaluate_PDF(const double x) const; 
 
+		// Computes the inverse CDF of the Normal distribution at the point u.
+		//
+		// Where the input "u" takes the values [0, 1]. Otherwise, this function returns a NaN.
+		// 
+		// This expression for the inverse CDF was found in Table 3.1 (Page 151) of the following book:
+		// G. Fishman,Monte Carlo: Concepts, Algorithms, and Applications, Springer-Verlag, NewYork, 1996
+		// Available at: https://link.springer.com/book/10.1007/978-1-4757-2553-7
+		double evaluate_inverse_CDF(const double u) const;
+
 		// Takes a random sample of the normal distribution using a random number generator
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
