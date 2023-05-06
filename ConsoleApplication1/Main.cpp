@@ -26,6 +26,7 @@ int main() {
     //TestSuite::orthogonal_product_legendre_test();
     //TestSuite::orthogonal_product_hermite_test();
     //TestSuite::orthogonal_product_laguerre_test();
-    TestSuite::cdf_icdf_test();
+    TestSuite::cdf_icdf_normal_test();
+    // TestSuite::cdf_icdf_gamma_test();
     //TestSuite::galerkin_projection_test();
 }

@@ -43,7 +43,9 @@ namespace TestSuite {
 
 	bool orthogonal_product_laguerre_test();
 
-	bool cdf_icdf_test();
+	bool cdf_icdf_normal_test();
+
+	bool cdf_icdf_gamma_test();
 
 	bool galerkin_projection_test();
 }

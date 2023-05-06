@@ -665,9 +665,36 @@ namespace TestSuite {
         return false;
     }
 
-    bool cdf_icdf_test() {
-        std::vector<double> x = MathTools::linspace(0, 6, 201);
-        std::vector<double> y = MathTools::linspace(0, 1, 201);
+    bool cdf_icdf_normal_test() {
+        std::vector<double> x = MathTools::linspace(-1, 6, 1001);
+        std::vector<double> y = MathTools::linspace(0, 1, 1001);
+        std::vector<double> PDF_values;
+        std::vector<double> CDF_values;
+        std::vector<double> iCDF_values;
+
+        std::default_random_engine generator;
+        MathTools::NormalCDistribution normal(3, 1);
+
+        for (size_t i = 0; i < x.size(); i++) {
+            PDF_values.push_back(normal.evaluate_PDF(x[i]));
+            CDF_values.push_back(normal.evaluate_CDF(x[i]));
+            iCDF_values.push_back(normal.evaluate_iCDF(y[i]));
+        }
+
+        MathTools::print_scalar_list(x, "xDistribution");
+        MathTools::print_scalar_list(y, "yDistribution");
+        MathTools::print_scalar_list(PDF_values, "PDF");
+        MathTools::print_scalar_list(CDF_values, "CDF");
+        MathTools::print_scalar_list(iCDF_values, "iCDF");
+
+        std::cout << "Graphical test required for 'cdf_icdf_normal_test()'" << std::endl;
+
+        return true;
+    }
+
+    bool cdf_icdf_gamma_test() {
+        std::vector<double> x = MathTools::linspace(-1, 14, 1001);
+        std::vector<double> y = MathTools::linspace(0, 1, 1001);
         std::vector<double> PDF_values;
         std::vector<double> CDF_values;
         std::vector<double> iCDF_values;
@@ -687,7 +714,7 @@ namespace TestSuite {
         MathTools::print_scalar_list(CDF_values, "CDF");
         MathTools::print_scalar_list(iCDF_values, "iCDF");
 
-        std::cout << "Graphical test required for 'cdf_icdf_test()'" << std::endl;
+        std::cout << "Graphical test required for 'cdf_icdf_gamma_test()'" << std::endl;
 
         return true;
     }
