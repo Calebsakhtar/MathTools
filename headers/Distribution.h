@@ -31,6 +31,8 @@ namespace MathTools {
 		//virtual double evaluate_inverse_CDF(const double u) const = 0;
 
 		virtual double sample(std::default_random_engine& generator) const = 0;
+
+		virtual double evaluate_CDF(const double x, const double steps = 1e4) const;
 	};
 
 	// *********** NORMAL DISTRIBUTION *********** //
@@ -42,7 +44,7 @@ namespace MathTools {
 		// Evaluates the PDF of the Normal Distribution at the point x.
 		//
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
-		double evaluate_PDF(const double x) const; 
+		double evaluate_PDF(const double x) const;
 
 		// Computes the inverse CDF of the Normal distribution at the point u.
 		//

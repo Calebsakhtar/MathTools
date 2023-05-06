@@ -5,6 +5,29 @@
 
 namespace MathTools {
 
+	// *********** DISTRIBUTION FUNCTIONS *********** //
+
+	double Distribution::evaluate_CDF(const double x, const double steps) const {
+		// Evaluates the CDF of the Distribution at the point x.
+		//
+		// This is done by numerical integration of the PDF.
+
+		const std::vector<double> x_list = linspace(m_mean - 10 * m_stdev, x, steps);
+
+		std::vector<double> result;
+		double h;
+
+		result.push_back(0);
+
+		for (size_t i = 1; i < x_list.size(); i++) {
+			h = x_list[i] - x_list[i - 1];
+			result.push_back(result[i - 1] + 0.5 * h *
+				(evaluate_PDF(x_list[i]) + evaluate_PDF(x_list[i - 1])));
+		}
+
+		return *result.end();
+	}
+
 	// *********** NORMAL DISTRIBUTION FUNCTIONS *********** //
 	double NormalCDistribution::evaluate_PDF(const double x) const {
 		// Evaluates the PDF of the Normal Distribution at the point x.
