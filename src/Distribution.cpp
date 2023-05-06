@@ -28,6 +28,16 @@ namespace MathTools {
 		return *result.end();
 	}
 
+	// Evaluates the inverse CDF of the Distribution at the point x.
+	//
+	// This is done by the use of the Newton-Raphson method. A maximum number of
+	// steps "max_stepnum" is used, and a tolerance for the error of the answer
+	// "tol" is also used.
+	double Distribution::evaluate_inverse_CDF(const double u, const double max_stepnum,
+		const double tol) const {
+		return 0;
+	}
+
 	// *********** NORMAL DISTRIBUTION FUNCTIONS *********** //
 	double NormalCDistribution::evaluate_PDF(const double x) const {
 		// Evaluates the PDF of the Normal Distribution at the point x.
@@ -37,7 +47,8 @@ namespace MathTools {
 		return exp(-1 * pow(x - m_mean, 2) / (2 * pow(m_stdev, 2))) / (m_stdev * sqrt(2 * M_PI));
 	}
 
-	double NormalCDistribution::evaluate_inverse_CDF(const double u) const {
+	double NormalCDistribution::evaluate_inverse_CDF(const double u, const double max_stepnum,
+		const double tol) const {
 		// Computes the inverse CDF of the Normal distribution at the point u.
 		//
 		// Where the input "u" takes the values [0, 1]. Otherwise, this function returns a NaN.
@@ -123,7 +134,8 @@ namespace MathTools {
 		return (x - m_lower_lim) / (m_upper_lim - m_lower_lim);
 	}
 
-	double UniformCDistribution::evaluate_inverse_CDF(const double u) const {
+	double UniformCDistribution::evaluate_inverse_CDF(const double u, const double max_stepnum,
+		const double tol) const {
 		// Computes the inverse CDF of the Uniform distribution at the point u.
 		//
 		// x = lower_lim + (upper_lim - lower_lim) * u
