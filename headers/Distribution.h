@@ -184,6 +184,9 @@ namespace MathTools {
 
 			m_mean = alpha_shape / beta_scale;
 			m_stdev = sqrt(alpha_shape) / beta_scale;
+			
+			m_lower_lim = 0;
+			m_upper_lim = m_mean + 20 * m_stdev;
 		};
 
 		// Initialize the parameters of the Gamma Distribution using the mean
@@ -228,6 +231,9 @@ namespace MathTools {
 
 			m_mean = m_alpha_shape;
 			m_stdev = sqrt(m_alpha_shape);
+
+			m_lower_lim = 0;
+			m_upper_lim = m_mean + 20 * m_stdev;
 		};
 
 		// Initialize the parameters of the Gamma Distribution using the
@@ -280,6 +286,9 @@ namespace MathTools {
 
 			m_mean = alpha / (alpha + beta);
 			m_stdev = sqrt(alpha * beta /( pow(alpha + beta,2) * (alpha + beta + 1)));
+
+			m_lower_lim = 0;
+			m_upper_lim = 1;
 		};
 
 		// Initialize the parameters of the Beta Distribution using the mean

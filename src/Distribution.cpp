@@ -36,8 +36,9 @@ namespace MathTools {
 		// steps "m_iCDF_max_stepnum" is used, and a tolerance for the error of the answer
 		// "m_iCDF_tol" is also used.
 
-		//std::vector<double> x = { 0, 1 };
-		//integrate_func_SISO(x, evaluate_CDF());
+		if (u == 0) { return m_lower_lim; }
+		if (u == 1) { return m_upper_lim; }
+
 		return 0;
 	}
 
@@ -179,6 +180,9 @@ namespace MathTools {
 
 		m_alpha_shape = pow(mean / stdev, 2);
 		m_beta_scale = mean / pow(stdev, 2);
+
+		m_lower_lim = 0;
+		m_upper_lim = m_mean + 20 * m_stdev;
 	}
 
 	double GammaCDistribution::evaluate_PDF(const double x) const {
@@ -217,6 +221,9 @@ namespace MathTools {
 
 		m_alpha = m_mean - 1;
 		m_alpha_shape = m_alpha + 1;
+
+		m_lower_lim = 0;
+		m_upper_lim = m_mean + 20 * m_stdev;
 	}
 
 	void WAGammaCDistribution::set_params_mean(const double mean) {
@@ -233,6 +240,9 @@ namespace MathTools {
 
 		m_alpha = m_mean - 1;
 		m_alpha_shape = m_alpha + 1;
+
+		m_lower_lim = 0;
+		m_upper_lim = m_mean + 20 * m_stdev;
 	}
 
 	double WAGammaCDistribution::evaluate_PDF(const double x) const {
@@ -267,6 +277,9 @@ namespace MathTools {
 
 		m_alpha = (1 - mean) * pow(mean / stdev, 2) - mean;
 		m_beta = m_alpha / mean * (1 - mean);
+
+		m_lower_lim = 0;
+		m_upper_lim = 1;
 	}
 
 	double BetaCDistribution::evaluate_PDF(const double x) const {
@@ -313,6 +326,9 @@ namespace MathTools {
 
 		m_mean = 2 * (m_mean - 0.5);
 		m_stdev = 2 * m_stdev;
+
+		m_lower_lim = -1;
+		m_upper_lim = 1;
 	};
 
 	void WABetaCDistribution::set_params_mean_stdev(const double mean_new, const double stdev_new) {
@@ -342,6 +358,9 @@ namespace MathTools {
 
 		m_alpha_new = m_beta - 1;
 		m_beta_new = m_alpha - 1;
+
+		m_lower_lim = -1;
+		m_upper_lim = 1;
 	}
 
 	double WABetaCDistribution::evaluate_PDF(const double x) const {
