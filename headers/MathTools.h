@@ -88,6 +88,15 @@ namespace MathTools {
 		std::vector<std::shared_ptr<Dist>> ip_distributions,
 		std::vector<std::shared_ptr<Poly>> ip_orth_polys);
 
+	// 1-D numerical integration (trapezium rule) of a the PDFs of a set of distributions
+	// and a set of orthogonal polynomials.
+	//
+	// This function returns the total value of the integral
+	template <typename Dist, typename Poly>
+	double galerkin_projection(const std::vector<double>& ip_list,
+		std::shared_ptr<Dist> ip_distribution, std::shared_ptr<Dist> ip_germ_dist,
+		std::shared_ptr<Poly> ip_orth_poly);
+
 	//// N-D numerical integration of a Multiple-Input Single-Output (MISO) function.
 	//double integrate_func_MISO(const std::vector<Eigen::VectorXd>& ip_list,
 	//	MISO_scalar_function func);

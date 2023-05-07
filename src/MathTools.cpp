@@ -225,6 +225,43 @@ namespace MathTools {
 		return result.back();
 	}
 
+	template <typename Dist, typename Poly>
+	double galerkin_projection(const std::vector<double>& ip_list,
+		std::shared_ptr<Dist> ip_distribution, std::shared_ptr<Dist> ip_germ_dist,
+		std::shared_ptr<Poly> ip_orth_poly) {
+		// 1-D numerical integration (trapezium rule) of a the PDFs of a set of distributions
+		// and a set of orthogonal polynomials.
+		//
+		// This function returns a vector containing the values of the integral
+		// at all points in ip_list minus the value of the integral at the initial point of
+		// ip_list
+
+		std::vector<double> result;
+		double h = 1;
+		double current_eval = 1;
+		double prev_eval = 1;
+
+		prev_eval *= ip_distribution->evaluate_iCDF(ip_list[0]);
+		prev_eval *= ip_orth_poly->evaluate(ip_germ_dist->evaluate_iCDF(ip_list[0]));
+
+		result.push_back(0);
+
+		for (size_t i = 1; i < ip_list.size(); i++) {
+			h = ip_list[i] - ip_list[i - 1];
+			current_eval = 1;
+
+			prev_eval *= ip_distribution->evaluate_iCDF(ip_list[i]);
+			prev_eval *= ip_orth_poly->evaluate(ip_germ_dist->evaluate_iCDF(ip_list[i]));
+
+			result.push_back(result[i - 1] + 0.5 * h *
+				(current_eval + prev_eval));
+
+			prev_eval = current_eval;
+		}
+
+		return result.back();
+	}
+
 	// Template function instantiations
 	template
 		int factorial(const int n);
@@ -251,4 +288,28 @@ namespace MathTools {
 		double integrate_product_dist_polys(const std::vector<double>& ip_list,
 		std::vector<std::shared_ptr<BetaCDistribution>> ip_distributions,
 		std::vector<std::shared_ptr<JacobiPoly>> ip_orth_polys);
+
+	template
+		double galerkin_projection(const std::vector<double>& ip_list,
+			std::shared_ptr<NormalCDistribution> ip_distribution, 
+			std::shared_ptr<NormalCDistribution> ip_germ_dist,
+			std::shared_ptr<HermitePoly> ip_orth_poly);
+
+	template
+		double galerkin_projection(const std::vector<double>& ip_list,
+			std::shared_ptr<UniformCDistribution> ip_distribution, 
+			std::shared_ptr<UniformCDistribution> ip_germ_dist,
+			std::shared_ptr<LegendrePoly> ip_orth_poly);
+
+	template
+		double galerkin_projection(const std::vector<double>& ip_list,
+			std::shared_ptr<GammaCDistribution> ip_distribution, 
+			std::shared_ptr<GammaCDistribution> ip_germ_dist,
+			std::shared_ptr<LaguerrePoly> ip_orth_poly);
+
+	template
+		double galerkin_projection(const std::vector<double>& ip_list,
+			std::shared_ptr<BetaCDistribution> ip_distribution, 
+			std::shared_ptr<BetaCDistribution> ip_germ_dist,
+			std::shared_ptr<JacobiPoly> ip_orth_poly);
 }
