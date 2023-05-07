@@ -748,10 +748,11 @@ namespace TestSuite {
 
     bool galerkin_projection_test() {
         // Values of the spectral variable eta
-        const std::vector<double> ip_list = MathTools::linspace(-10, 30, 10001);
+        const std::vector<double> x_list = MathTools::linspace(-10, 30, 10001);
+        const std::vector<double> u_list = MathTools::linspace(1e-10, 1 - 1e-10, 1001);
 
         // Other variables
-        const size_t max_order = 3; // Maximum order of the orthogonal polynomials used
+        const size_t max_order = 10; // Maximum order of the orthogonal polynomials used
         double num = 0; // Numerator value
         double denom = 0; // Denominator value
 
@@ -766,15 +767,6 @@ namespace TestSuite {
         std::shared_ptr<MathTools::HermitePoly> current_poly_ptr(new MathTools::HermitePoly(0));
         auto poly_ptr_den(current_poly_ptr);
         auto poly_ptr_den_2(current_poly_ptr);
-
-        // Functions to be evaluated in the numerator of the Galerkin Projection 
-        std::vector<std::shared_ptr<MathTools::NormalCDistribution>>
-            distributions_num;
-        distributions_num.push_back(std::move(lambda_ptr));
-        distributions_num.push_back(std::move(germ_ptr));
-
-        std::vector<std::shared_ptr<MathTools::HermitePoly>> polys_num;
-        polys_num.push_back(std::move(current_poly_ptr));
 
         // Functions to be evaluated in the denominator of the Galerkin Projection
         std::vector<std::shared_ptr<MathTools::NormalCDistribution>>
@@ -792,21 +784,40 @@ namespace TestSuite {
         // Loop to find the coefficients of Lambda
         for (size_t i = 0; i < max_order; i++) {
             // To save memory, only one polynomial is used, and is order is updated
-            for (size_t j = 0; j < polys_num.size(); j++) {
-                polys_num[j]->set_order(i);
-            }
-
-            for (size_t j = 0; j < polys_den.size(); j++) {
-                polys_den[j]->set_order(i);
-            }
+            current_poly_ptr->set_order(i);
 
             // Evaluate the numerator and denominator of the Galerkin projection for Lambda
-            num = MathTools::integrate_product_dist_polys(ip_list, distributions_num, polys_num);
-            denom = MathTools::integrate_product_dist_polys(ip_list, distributions_den, polys_den);
+            num = MathTools::galerkin_projection(u_list, lambda_ptr, germ_ptr, current_poly_ptr);
+            denom = MathTools::integrate_product_dist_polys(x_list, distributions_den, polys_den);
 
             // Store the current coefficient of Lambda
             lambda_coeffs.push_back(num / denom);
         }
+
+        std::vector<double> PDF_values_exact;
+        std::vector<double> PDF_values_approx;
+        double result = 0;
+
+        for (size_t j = 0; j < x_list.size(); j++) {
+            result = 0;
+            
+            // Loop to find the coefficients of Lambda
+            for (size_t i = 0; i < max_order; i++) {
+                // To save memory, only one polynomial is used, and is order is updated
+                current_poly_ptr->set_order(i);
+
+                result += lambda_coeffs[i] * current_poly_ptr->evaluate(x_list[j]);
+            }
+
+            PDF_values_exact.push_back(lambda_ptr->evaluate_PDF(x_list[j]));
+            PDF_values_approx.push_back(result);
+        }
+
+        MathTools::print_scalar_list(x_list, "xDistribution");
+        MathTools::print_scalar_list(PDF_values_exact, "Exact");
+        MathTools::print_scalar_list(PDF_values_approx, "Approx");
+
+        std::cout << "Graphical test required for 'galerkin_projection_test()'" << std::endl;
 
         return true;
     }
