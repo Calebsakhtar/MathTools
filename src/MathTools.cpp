@@ -250,8 +250,8 @@ namespace MathTools {
 			h = ip_list[i] - ip_list[i - 1];
 			current_eval = 1;
 
-			prev_eval *= ip_distribution->evaluate_iCDF(ip_list[i]);
-			prev_eval *= ip_orth_poly->evaluate(ip_germ_dist->evaluate_iCDF(ip_list[i]));
+			current_eval *= ip_distribution->evaluate_iCDF(ip_list[i]);
+			current_eval *= ip_orth_poly->evaluate(ip_germ_dist->evaluate_iCDF(ip_list[i]));
 
 			result.push_back(result[i - 1] + 0.5 * h *
 				(current_eval + prev_eval));
