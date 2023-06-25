@@ -1,6 +1,106 @@
+#include<algorithm>
+
 #include "../headers/Distribution.h"
+#include "../headers/MathTools.h"
 
 namespace MathTools {
+
+	// *********** DISTRIBUTION FUNCTIONS *********** //
+	double Distribution::evaluate_CDF(const double x) const {
+		// Evaluates the CDF of the Distribution at the point x.
+		//
+		// This is done by numerical integration of the PDF. The step size of the
+		// integration is controlled by the parameter "m_CDF_stepnum".
+
+		const std::vector<double> x_list = linspace(m_lower_lim, x, m_CDF_stepnum);
+
+		std::vector<double> result;
+		double h;
+
+		result.push_back(0);
+
+		for (size_t i = 1; i < x_list.size(); i++) {
+			h = x_list[i] - x_list[i - 1];
+			result.push_back(result[i - 1] + 0.5 * h *
+				(evaluate_PDF(x_list[i]) + evaluate_PDF(x_list[i - 1])));
+		}
+
+		return result.back();
+	}
+
+	double Distribution::evaluate_iCDF(const double u) const {
+		// Evaluates the inverse CDF of the Distribution at the point x.
+		//
+		// This is done by the use of the Newton-Raphson method. A maximum number of
+		// steps "m_iCDF_max_stepnum" is used, and a tolerance for the error of the answer
+		// "m_iCDF_tol" is also used.
+		//
+		// Details about the Newton-Raphson method: https://en.wikipedia.org/wiki/Newton%27s_method
+
+		// Return NaN if u is not within [0, 1].
+		if (u < 0 || u > 1) { return NAN; }
+
+		// Return the limit values if u is at the limits
+		if (u == 0) { return m_lower_lim; }
+		if (u == 1) { return m_upper_lim; }
+
+		size_t steps = 0;
+		const double factor = 0.5; // Reduction factor to prevent overshooting
+		double x = (m_mean + m_lower_lim) / 2; // Choose not to start at mean to protect from NaNs
+		double x_prev = 0;
+		double f = evaluate_CDF(x) - u;
+		double f_prev = 1e10;
+		double f_dash = evaluate_PDF(x);
+		double step = 0; // Step size
+
+		// Loop until tolerance satisfied or max. step number reached
+		while (abs(f) > m_iCDF_tol && steps < m_iCDF_max_stepnum) {
+
+			// Protect against NaNs
+			if (f_dash == 0) { f_dash = 1e-3; }
+
+			// Save the details of the previous step
+			x_prev = x;
+			f_prev = f;
+
+			// Evaluate the new x
+			step = f / f_dash;
+			x = x_prev - step;
+
+			// Protect against overshooting the limits of the CDF
+			while (x < m_lower_lim || x > m_upper_lim) {
+				step *= factor;
+				x = x_prev - step;
+
+				// If for whatever reason we are still stuck after not moving,
+				// exit this loop
+				if (is_same_double(x, x_prev)) {
+					break;
+				}
+			}
+
+			// Evaluate the new objective function
+			f = evaluate_CDF(x) - u;
+
+			// Protect against overshooting the predicted improvement in abs(f)
+			while (abs(f_prev) < abs(f)) {
+				step *= factor;
+				x = x_prev - step;
+				f = evaluate_CDF(x) - u;
+
+				// If for whatever reason we are still stuck after not moving,
+				// exit this loop
+				if (is_same_double(x, x_prev)) {
+					break;
+				}
+			}
+
+			f_dash = evaluate_PDF(x);
+			steps++;
+		}
+
+		return x;
+	}
 
 	// *********** NORMAL DISTRIBUTION FUNCTIONS *********** //
 	double NormalCDistribution::evaluate_PDF(const double x) const {
@@ -9,6 +109,39 @@ namespace MathTools {
 		// See the following link for more details: https://cplusplus.com/reference/random/normal_distribution/
 
 		return exp(-1 * pow(x - m_mean, 2) / (2 * pow(m_stdev, 2))) / (m_stdev * sqrt(2 * M_PI));
+	}
+
+	double NormalCDistribution::evaluate_iCDF(const double u) const {
+		// Computes the inverse CDF of the Normal distribution at the point u.
+		//
+		// Where the input "u" takes the values [0, 1]. Otherwise, this function returns a NaN.
+		// 
+		// This expression for the inverse CDF was found in Table 3.1 (Page 151) of the following book:
+		// G. Fishman,Monte Carlo: Concepts, Algorithms, and Applications, Springer-Verlag, NewYork, 1996
+		// Available at: https://link.springer.com/book/10.1007/978-1-4757-2553-7
+
+		if (u < 0 || u > 1) {
+			return NAN;
+		}
+
+		const double c0 = 2.515517;
+		const double c1 = 0.802853;
+		const double c2 = 0.010328;
+		const double d1 = 1.432788;
+		const double d2 = 0.189269;
+		const double d3 = 0.001308;
+
+		const double t = sqrt(-log(pow(std::min(u, 1 - u), 2)));
+		
+		double sign = u - 0.5;
+		if (sign != 0) { sign = sign / abs(sign); }
+
+		double result = - ( c0 + c1 * t + c2 * pow(t, 2)) / (1 + d1 * t + d2 * pow(t, 2) + d3 * pow(t,3));
+		result += t;
+		result *= sign * m_stdev;
+		result += m_mean;
+
+		return result;
 	}
 
 	double NormalCDistribution::sample(std::default_random_engine& generator) const {
@@ -52,6 +185,36 @@ namespace MathTools {
 		}
 	}
 
+	double UniformCDistribution::evaluate_CDF(const double x) const {
+		// Evaluates the CDF of the Uniform Distribution at the point x.
+		// This is done by analytical integration of the PDF:
+		//
+		// CDF = (x - lower_lim) / (upper_lim - lower_lim)
+
+		if (x <= m_lower_lim) { return 0; }
+		if (x >= m_upper_lim) { return 1; }
+
+		return (x - m_lower_lim) / (m_upper_lim - m_lower_lim);
+	}
+
+	double UniformCDistribution::evaluate_iCDF(const double u) const {
+		// Computes the inverse CDF of the Uniform distribution at the point u.
+		//
+		// x = lower_lim + (upper_lim - lower_lim) * u
+		//
+		// Where the input "u" takes the values [0, 1]. Otherwise, this function returns a NaN.
+		// 
+		// This expression for the inverse CDF was found in Table 3.1 (Page 151) of the following book:
+		// G. Fishman,Monte Carlo: Concepts, Algorithms, and Applications, Springer-Verlag, NewYork, 1996
+		// Available at: https://link.springer.com/book/10.1007/978-1-4757-2553-7
+
+		if (u < 0 || u > 1) {
+			return NAN;
+		}
+
+		return m_lower_lim + (m_upper_lim - m_lower_lim) * u;
+	}
+
 	double UniformCDistribution::sample(std::default_random_engine& generator) const {
 		// Takes a random sample of the Uniform Distribution using a random number generator.
 		//
@@ -77,6 +240,9 @@ namespace MathTools {
 
 		m_alpha_shape = pow(mean / stdev, 2);
 		m_beta_scale = mean / pow(stdev, 2);
+
+		m_lower_lim = 0;
+		m_upper_lim = m_mean + 20 * m_stdev;
 	}
 
 	double GammaCDistribution::evaluate_PDF(const double x) const {
@@ -100,6 +266,65 @@ namespace MathTools {
 		return gamma(generator);
 	}
 
+	// *********** GAMMA DISTRIBUTION (WIENER-ASKEY) FUNCTIONS *********** //
+	void WAGammaCDistribution::set_params_stdev(const double stdev) {
+		// Initialize the parameters of the Gamma Distribution using the
+		// standard deviation.
+		//
+		// mean =  (stdev)^2
+		// alpha = mean - 1
+		//
+		// See the following link for more details: https://doi.org/10.1137/S1064827501387826
+
+		m_mean = stdev * stdev;
+		m_stdev = stdev;
+
+		m_alpha = m_mean - 1;
+		m_alpha_shape = m_alpha + 1;
+
+		m_lower_lim = 0;
+		m_upper_lim = m_mean + 20 * m_stdev;
+	}
+
+	void WAGammaCDistribution::set_params_mean(const double mean) {
+		// Initialize the parameters of the Gamma Distribution using the
+		// standard deviation.
+		//
+		// stdev = (mean)^0.5
+		// alpha = mean - 1
+		//
+		// See the following link for more details: https://doi.org/10.1137/S1064827501387826
+
+		m_mean = mean;
+		m_stdev = sqrt(mean);
+
+		m_alpha = m_mean - 1;
+		m_alpha_shape = m_alpha + 1;
+
+		m_lower_lim = 0;
+		m_upper_lim = m_mean + 20 * m_stdev;
+	}
+
+	double WAGammaCDistribution::evaluate_PDF(const double x) const {
+		// Evaluates the PDF of the Gamma Distribution at the point x.
+		//
+		// See the following link for more details: https://doi.org/10.1137/S1064827501387826
+
+		if (x <= 0) { return 0; }
+
+		return exp(-x) * pow(x, m_alpha) / tgamma(m_alpha + 1);
+	}
+
+	double WAGammaCDistribution::sample(std::default_random_engine& generator) const {
+		// Takes a random sample of the Gamma Distribution using a random number generator.
+		//
+		// See the following link for more details: https://en.cppreference.com/w/cpp/numeric/random/gamma_distribution
+
+		std::gamma_distribution<double> gamma(m_alpha_shape, m_beta_scale);
+
+		return gamma(generator);
+	}
+
 	// *********** BETA DISTRIBUTION FUNCTIONS *********** //
 	void BetaCDistribution::set_params_mean_stdev(const double mean, const double stdev){
 		// Initialize the parameters of the Beta Distribution using the mean
@@ -112,6 +337,9 @@ namespace MathTools {
 
 		m_alpha = (1 - mean) * pow(mean / stdev, 2) - mean;
 		m_beta = m_alpha / mean * (1 - mean);
+
+		m_lower_lim = 0;
+		m_upper_lim = 1;
 	}
 
 	double BetaCDistribution::evaluate_PDF(const double x) const {
@@ -137,5 +365,94 @@ namespace MathTools {
 		const double Y = gammaY(generator);
 
 		return X / (X + Y);
+	}
+
+	// *********** BETA (WIENER-ASKEY) DISTRIBUTION FUNCTIONS *********** //
+			// Constructor that uses the following equations to set the mean and
+		// standard deviation
+		//
+		// mean = alpha / (alpha + beta)
+		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+	WABetaCDistribution::WABetaCDistribution(const double alpha_new, const double beta_new) {
+		m_alpha_new = alpha_new;
+		m_beta_new = beta_new;
+		m_alpha = m_beta_new + 1;
+		m_beta = m_alpha_new + 1;
+
+		m_mean = m_alpha / (m_alpha + m_beta);
+		m_stdev = sqrt(m_alpha * m_beta / (pow(m_alpha + m_beta, 2) * (m_alpha + m_beta + 1)));
+
+		m_mean = 2 * (m_mean - 0.5);
+		m_stdev = 2 * m_stdev;
+
+		m_lower_lim = -1;
+		m_upper_lim = 1;
+	};
+
+	void WABetaCDistribution::set_params_mean_stdev(const double mean_new, const double stdev_new) {
+		// Initialize the parameters of the Beta Distribution using the mean
+		// and standard deviation. It inverts the below equations:
+		//
+		// mean = alpha / (alpha + beta)
+		// stdev = sqrt(alpha * beta / (pow(alpha + beta, 2) * (alpha + beta + 1)))
+		//
+		// See the following link for more details: https://en.wikipedia.org/wiki/Beta_distribution
+		//
+		// This distribution has been shifted to have a mean of zero and a domain of [-1, 1].
+		// In this alpha_new and beta_new are related to beta and alpha respectively.
+		// See for more details: https://doi.org/10.1137/S106482750138782
+
+		m_mean = mean_new;
+		m_stdev = stdev_new;
+
+		double mean_old = m_mean / 2. + 0.5;
+		double stdev_old = m_stdev / 2.;
+
+		m_alpha = (1 - mean_old) * pow(mean_old / stdev_old, 2) - mean_old;
+		m_beta = m_alpha / mean_old * (1 - mean_old);
+
+		if (m_alpha < 1e-3) { m_alpha = 1e-3; }
+		if (m_beta < 1e-3) { m_beta = 1e-3; }
+
+		m_alpha_new = m_beta - 1;
+		m_beta_new = m_alpha - 1;
+
+		m_lower_lim = -1;
+		m_upper_lim = 1;
+	}
+
+	double WABetaCDistribution::evaluate_PDF(const double x) const {
+		// Evaluates the PDF of the Beta Distribution at the point x.
+		//
+		// This distribution has been shifted to have a mean of zero and a domain of [-1, 1].
+		// In this alpha_new and beta_new are related to beta and alpha respectively.
+		// See for more details: https://doi.org/10.1137/S106482750138782
+
+		if (x < -1 || x > 1) { return 0; }
+
+		return pow(1 - x, m_alpha_new) * pow(1 + x, m_beta_new) * tgamma(m_alpha_new + m_beta_new + 2)
+			/ (tgamma(m_alpha_new + 1) * tgamma(m_beta_new + 1) * pow(2, m_alpha_new + m_beta_new + 1));
+	}
+
+	double WABetaCDistribution::sample(std::default_random_engine& generator) const {
+		// Takes a random sample of the Beta Distribution using a random number generator.
+		//
+		// See the following link for more details: https://stackoverflow.com/a/10359049
+		//
+		// This distribution has been shifted to have a mean of zero and a domain of [-1, 1].
+		// In this alpha_new and beta_new are related to beta and alpha respectively.
+		// See for more details: https://doi.org/10.1137/S106482750138782
+
+		std::gamma_distribution<double> gammaX(m_alpha, 1);
+		std::gamma_distribution<double> gammaY(m_beta, 1);
+
+		const double X = gammaX(generator);
+		const double Y = gammaY(generator);
+
+		const double Z = X / (X + Y);
+
+		return 2 * (Z - 0.5);
 	}
 }
